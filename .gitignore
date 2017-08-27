@@ -3,4 +3,5 @@
 *.opendb
 *.tlog
 
+.vs
 Debug/
