@@ -1,0 +1,6 @@
+.suo
+*.db
+*.opendb
+*.tlog
+
+Debug/
