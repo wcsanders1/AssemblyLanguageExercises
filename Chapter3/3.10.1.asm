@@ -1,3 +1,5 @@
+; Calculate the sum of four integer values assigned to general-purpose registers. 
+
 .386
 .model flat,stdcall
 .stack 4096
