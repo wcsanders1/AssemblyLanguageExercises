@@ -16,7 +16,7 @@ main PROC
 
 	inc		val2
 	sub		eax, val3
-	movzx	ebx, val2
+	movzx		ebx, val2
 	sub		bx, val4
 
 	add		val2, 1
