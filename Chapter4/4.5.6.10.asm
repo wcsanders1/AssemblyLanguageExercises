@@ -3,9 +3,6 @@
 .stack 4096
 ExitProcess PROTO, dwExitCode:DWORD
 
-.data
-
-
 .code
 main PROC
 	mov		eax, 0
