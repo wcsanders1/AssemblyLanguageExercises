@@ -15,6 +15,16 @@ main PROC
 	mov		WORD PTR three, bx
 	mov		WORD PTR three + 2, ax
 
+; 2.
+	mov		ah,	1	; A
+	mov		al, 2	; B
+	mov		bh, 3	; C
+	mov		bl, 4	; D
+
+	xchg	ah, al	; BACD
+	xchg	al, bl	; BDCA
+	xchg	al, bh	; BCDA
+
 
 	INVOKE ExitProcess,0
 main ENDP
