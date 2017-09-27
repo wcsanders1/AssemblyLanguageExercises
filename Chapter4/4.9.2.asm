@@ -5,6 +5,7 @@ ExitProcess PROTO, dwExitCode:DWORD
 
 .data
 three DWORD 12345678h
+byteVal BYTE 10001111b
 
 .code
 main PROC
@@ -25,6 +26,14 @@ main PROC
 	xchg	al, bl	; BDCA
 	xchg	al, bh	; BCDA
 
+; 3.
+	mov		al, 01110101b
+	dec     al
+	inc		al
+	lahf			; moves values of sign, zero, aux carry, parity, and carry flags in ah
+
+;4.
+	movsx	ax, byteVal
 
 	INVOKE ExitProcess,0
 main ENDP
