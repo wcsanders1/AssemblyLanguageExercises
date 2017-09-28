@@ -4,8 +4,13 @@
 ExitProcess PROTO, dwExitCode:DWORD
 
 .data
+; for question 1:
 three DWORD 12345678h
-byteVal BYTE 10001111b
+
+; for question 7:
+val1 DWORD 00000005h
+val2 DWORD 00000008h
+val3 DWORD 0000000Fh
 
 .code
 main PROC
@@ -32,10 +37,33 @@ main PROC
 	inc		al
 	lahf			; moves values of sign, zero, aux carry, parity, and carry flags in ah
 
-;4.
+; 4.
 	mov		al, -128
 	add		al, -1
 
+; 5.
+	call	setCarryFlagToZero
+
+	mov		al, 1
+	add		al,	255
+
+; 6.
+	call	setCarryFlagToZero
+
+	mov		al, 0
+	sub		al, 255
+
+; 7.
+	
+
 	INVOKE ExitProcess,0
 main ENDP
+
+setCarryFlagToZero PROC
+	mov		al, 1
+	add		al, 1
+
+	ret
+setCarryFlagToZero ENDP
+
 END main
