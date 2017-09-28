@@ -33,7 +33,8 @@ main PROC
 	lahf			; moves values of sign, zero, aux carry, parity, and carry flags in ah
 
 ;4.
-	movsx	ax, byteVal
+	mov		al, -128
+	add		al, -1
 
 	INVOKE ExitProcess,0
 main ENDP
