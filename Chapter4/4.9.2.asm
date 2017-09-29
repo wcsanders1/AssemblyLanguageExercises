@@ -8,9 +8,12 @@ ExitProcess PROTO, dwExitCode:DWORD
 three DWORD 12345678h
 
 ; for question 7:
-val1 DWORD 00000005h
-val2 DWORD 00000008h
-val3 DWORD 0000000Fh
+val1 DWORD 10h
+val2 DWORD 08h
+val3 DWORD 0Fh
+
+; for question 8:
+dwordArray DWORD 1h, 2h, 3h, 4h
 
 .code
 main PROC
@@ -54,7 +57,20 @@ main PROC
 	sub		al, 255
 
 ; 7.
-	
+	neg		val2
+	mov		eax, val2
+	add		eax, 7
+	sub		eax, val3
+	add		eax, val1	; eax = 0
+
+; 8.
+	mov		edi, OFFSET dwordArray
+	mov		ecx, LENGTHOF dwordArray
+	mov		eax, 0
+L1:
+	add		eax, [edi]
+	add		edi, TYPE dwordArray
+	loop	L1
 
 	INVOKE ExitProcess,0
 main ENDP
