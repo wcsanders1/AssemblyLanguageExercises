@@ -15,6 +15,18 @@ val3 DWORD 0Fh
 ; for question 8:
 dwordArray DWORD 1h, 2h, 3h, 4h
 
+; for question 9:
+val22 WORD 08h
+val44 WORD 04h
+
+; for questions 12-18:
+ALIGN 2
+myBytes16 LABEL WORD
+myBytes BYTE 10h, 20h, 30h, 40h
+myWords32 LABEL DWORD
+myWords WORD 3 DUP(?), 2000h
+myString BYTE "ABCDE"
+
 .code
 main PROC
 
@@ -71,6 +83,48 @@ L1:
 	add		eax, [edi]
 	add		edi, TYPE dwordArray
 	loop	L1
+
+; 9.
+	mov		bx, 0
+	add		bx, val22
+	sub		bx, val44
+	mov		ax, bx
+
+; 10.
+	mov		al, -128	; answer same as for question 4 above
+	add		al, -1
+
+; 11.
+	mov		al, 255
+	inc		al			; zero flag set, also indicating overflow
+	mov		al, 1
+	dec		al
+
+; 12. See above data section
+
+; 13.
+	mov		eax, TYPE myBytes		; eax = 1
+	mov		eax, LENGTHOF myBytes	; eax = 4
+	mov		eax, SIZEOF myBytes		; eax = 4
+	mov		eax, TYPE myWords		; eax = 2
+	mov		eax, LENGTHOF myWords	; eax = 4
+	mov		eax, SIZEOF myWords		; eax = 8
+	mov		eax, SIZEOF myString	; eax = 5
+
+; 14.
+	mov		dx, WORD PTR myBytes
+
+; 15.
+	mov		al, BYTE PTR myWords
+
+; 16.
+	mov		eax, DWORD PTR myBytes
+
+; 17.
+	mov		eax, myWords32
+
+; 18.
+	mov		ax, myBytes16
 
 	INVOKE ExitProcess,0
 main ENDP
