@@ -69,6 +69,21 @@ copy:
 	add		esi, [TYPE copyTo]
 	loop	copy
 
+; 5
+	mov		ecx, 7
+	mov		eax, 0
+	mov		ebx, 1
+	mov		edx, 0
+	mov		esi, 0
+
+fibonacci:
+	mov		esi, ebx
+	add		esi, edx
+	mov		eax, esi
+	mov		edx, ebx
+	mov		ebx, eax
+	loop	fibonacci
+
 	INVOKE ExitProcess,0
 main ENDP
 END main
