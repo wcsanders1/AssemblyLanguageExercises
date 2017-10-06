@@ -18,6 +18,13 @@ gaps DWORD 00h, 02h, 05h, 09h, 0Ah
 copyFrom WORD 05h, 0Ah, 010h, 0AFh, 060h
 copyTo DWORD 5 DUP (?)
 
+; for question 6:
+reverseArray DWORD 01h, 02h, 03h, 04h, 05h, 06h, 07h, 08h
+
+; for question 7:
+source BYTE "This is the source string",0
+target BYTE SIZEOF source DUP("#")
+
 .code
 main PROC
 ; 1.
@@ -69,7 +76,7 @@ copy:
 	add		esi, [TYPE copyTo]
 	loop	copy
 
-; 5
+; 5.
 	mov		ecx, 7
 	mov		eax, 0
 	mov		ebx, 1
@@ -83,6 +90,33 @@ fibonacci:
 	mov		edx, ebx
 	mov		ebx, eax
 	loop	fibonacci
+
+; 6.
+	mov		eax, 0	; front pointer
+	mov		ebx, [LENGTHOF reverseArray * TYPE reverseArray - TYPE reverseArray]	; back pointer
+	mov		ecx, [LENGTHOF reverseArray / 2]
+	mov		edx, 0	; holds front value
+	mov		esi, 0	; holds back value
+
+reverse:
+	mov		edx, [reverseArray + eax]
+	mov		esi, [reverseArray + ebx]
+	mov		[reverseArray + eax], esi
+	mov		[reverseArray + ebx], edx
+
+	add		eax, TYPE reverseArray
+	sub		ebx, TYPE reverseArray
+	loop	reverse
+
+; 7.
+	mov		esi, 0
+	mov		ecx, SIZEOF source
+
+reverseString:
+	mov		al, source[esi]
+	mov		target[ecx], al
+	inc		esi
+	loop	reverseString
 
 	INVOKE ExitProcess,0
 main ENDP
