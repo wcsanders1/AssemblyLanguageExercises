@@ -25,6 +25,9 @@ reverseArray DWORD 01h, 02h, 03h, 04h, 05h, 06h, 07h, 08h
 source BYTE "This is the source string",0
 target BYTE SIZEOF source DUP("#")
 
+; for question 8:
+wrapArray DWORD 10h, 20h, 30h, 40h, 50h, 60h
+
 .code
 main PROC
 ; 1.
@@ -110,13 +113,30 @@ reverse:
 
 ; 7.
 	mov		esi, 0
-	mov		ecx, SIZEOF source
+	mov		ecx, SIZEOF source - 1
 
 reverseString:
 	mov		al, source[esi]
 	mov		target[ecx], al
 	inc		esi
 	loop	reverseString
+
+; 8.
+	mov		esi, LENGTHOF wrapArray * TYPE wrapArray
+	mov		eax, wrapArray[esi - TYPE wrapArray]
+	mov		ecx, LENGTHOF wrapArray - 1
+	mov		esi, 0
+	mov		ebx, wrapArray
+	mov		edx, wrapArray + TYPE wrapArray
+
+wrap:
+	add		esi, TYPE wrapArray
+	mov		wrapArray[esi], ebx
+	mov		ebx, edx
+	mov		edx, wrapArray[esi + TYPE wrapArray]
+	loop	wrap
+	
+	mov		wrapArray, eax
 
 	INVOKE ExitProcess,0
 main ENDP
