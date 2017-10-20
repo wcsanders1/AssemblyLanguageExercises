@@ -7,12 +7,20 @@ INCLUDE Irvine32.inc
 
 .data
 prompt BYTE "Enter an integer I guess: ",0
+buffer BYTE 15 DUP (?)
+count DWORD ?
 
 .code
 main PROC
 	mov		edx, OFFSET prompt
 	call	WriteString
-	call	ReadInt
+
+	mov		edx, OFFSET buffer
+	mov		ecx, SIZEOF buffer
+
+	call	ReadString
+
+	mov		count, eax
 
 	INVOKE ExitProcess,0
 main ENDP
