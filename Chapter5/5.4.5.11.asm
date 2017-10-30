@@ -14,14 +14,12 @@ count DWORD ?
 main PROC
 	mov		edx, OFFSET prompt
 	call	WriteString
-
+	
 	mov		edx, OFFSET buffer
 	mov		ecx, SIZEOF buffer
-
+	
 	call	ReadString
-
+	
 	mov		count, eax
-
-	INVOKE ExitProcess,0
 main ENDP
 END main
