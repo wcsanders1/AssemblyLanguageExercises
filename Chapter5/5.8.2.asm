@@ -3,8 +3,14 @@
 .stack 4096
 ExitProcess PROTO, dwExitCode:DWORD
 
+INCLUDE Irvine32.inc
+
 .data
+; for question 3;
 ptr1 DWORD ?
+
+; for question 4:
+copyArray DWORD 00h, 02h, 05h, 09h, 0Ah
 
 .code
 main PROC
@@ -28,6 +34,16 @@ main PROC
 ; 3.
 	call reserveSpace
 
+; 4.
+	mov		eax, OFFSET copyArray
+	add		eax, [TYPE copyArray * 2]
+	mov		ebx, [eax]
+	sub		eax, TYPE copyArray
+	mov		[eax], ebx
+
+; 5.
+	call displayAddressOfThis
+
 	INVOKE ExitProcess,0
 main ENDP
 
@@ -50,5 +66,14 @@ reserveSpace PROC
 	ret
 
 reserveSpace ENDP
+
+displayAddressOfThis PROC
+	pop		edx
+	call	WriteHex
+	call	WaitMsg
+
+	push	edx
+	ret
+displayAddressOfThis ENDP
 
 END main
