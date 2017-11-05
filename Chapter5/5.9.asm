@@ -24,6 +24,13 @@ askForInt1 BYTE "Enter the first integer to add: ",0
 askForInt2 BYTE "Enter the second integer to add: ",0
 answerStr BYTE "The sum of those two numbers is: ",0
 
+; for problem 5:
+askForRnd1 BYTE "Enter the lower bound for a random integer: ",0
+askForRnd2 BYTE "Enter the upper bound for a random integer: ",0
+lowerBound DWORD ?
+upperBound DWORD ?
+difference DWORD ?
+
 .code
 main PROC
 
@@ -77,6 +84,25 @@ addTwoNums:
 	call	addTwoInts
 	loop	addTwoNums
 	
+; 5.
+	mov		edx, OFFSET askForRnd1
+	call	WriteString
+	call	ReadDec
+	mov		lowerBound, eax
+	mov		edx, OFFSET askForRnd2
+	call	WriteString
+	call	ReadDec
+	mov		upperBound, eax
+	mov		edx, upperBound
+	sub		edx, lowerBound
+	mov		difference, edx
+	mov		ecx, 49
+
+getRnd:
+	call	betterRandomRange
+	loop	getRnd
+	call	Crlf
+
 	call	WaitMsg
 
 	INVOKE ExitProcess,0
@@ -100,5 +126,14 @@ addTwoInts PROC
 	ret
 addTwoInts ENDP
 
+betterRandomRange PROC
+	mov		eax, difference
+	call	RandomRange
+	add		eax, lowerBound
+	call	WriteDec
+	call	Crlf
+
+	ret
+betterRandomRange ENDP
 
 END main
