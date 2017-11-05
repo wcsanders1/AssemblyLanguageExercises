@@ -19,6 +19,11 @@ chars BYTE "H", "A", "C", "E", "B", "D", "F", "G"
 links DWORD 0h, 4h, 5h, 6h, 2h, 3h, 7h, 0h
 sorted DWORD LENGTHOF links DUP (?)
 
+; for problem 3:
+askForInt1 BYTE "Enter the first integer to add: ",0
+askForInt2 BYTE "Enter the second integer to add: ",0
+answerStr BYTE "The sum of those two numbers is: ",0
+
 .code
 main PROC
 
@@ -62,8 +67,38 @@ sortLoop:
 	call	Crlf
 	call	Crlf
 
+; 3.
+	call	addTwoInts
+
+; 4.
+	mov		ecx, 2
+
+addTwoNums:
+	call	addTwoInts
+	loop	addTwoNums
+	
 	call	WaitMsg
 
 	INVOKE ExitProcess,0
 main ENDP
+
+addTwoInts PROC
+	mov		edx, OFFSET askForInt1
+	call	WriteString
+	call	ReadDec
+	mov		ebx, eax
+	mov		edx, OFFSET askForInt2
+	call	WriteString
+	call	ReadDec
+	mov		edx, OFFSET answerStr
+	call	WriteString
+	add		eax, ebx
+	call	WriteDec
+	call	Crlf
+	call	Crlf
+
+	ret
+addTwoInts ENDP
+
+
 END main
