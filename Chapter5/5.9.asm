@@ -31,6 +31,10 @@ lowerBound DWORD ?
 upperBound DWORD ?
 difference DWORD ?
 
+; for problem 6:
+;upperCaseLetters DWORD 26 DUP(0)
+upperCaseLetters DWORD 26 DUP (?) ;41h, 42h, 43h, 44h ;"A", "B", "C", "D"
+
 .code
 main PROC
 
@@ -103,6 +107,20 @@ getRnd:
 	loop	getRnd
 	call	Crlf
 
+; 6.
+	mov		edx, OFFSET upperCaseLetters
+	mov		eax, 41h	; ASCII for 'A'
+	mov		ecx, 25d
+
+fillLetterArray:
+	mov		[edx], eax
+	add		edx, 4
+	inc		eax
+	loop	fillLetterArray
+
+	mov		edx, OFFSET upperCaseLetters
+	call	WriteString
+
 	call	WaitMsg
 
 	INVOKE ExitProcess,0
@@ -135,5 +153,9 @@ betterRandomRange PROC
 
 	ret
 betterRandomRange ENDP
+
+generateRandomString PROC
+
+generateRandomString ENDP
 
 END main
