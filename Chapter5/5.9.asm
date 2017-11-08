@@ -33,7 +33,10 @@ difference DWORD ?
 
 ; for problem 6:
 ;upperCaseLetters DWORD 26 DUP(0)
+askForRndStrLngth BYTE "Enter the length for a random string: ",0
 upperCaseLetters DWORD 26 DUP (?) ;41h, 42h, 43h, 44h ;"A", "B", "C", "D"
+rndChar DWORD ?
+rndStrArray BYTE ?
 
 .code
 main PROC
@@ -108,23 +111,32 @@ getRnd:
 	call	Crlf
 
 ; 6.
-	mov		edx, OFFSET upperCaseLetters
-	mov		eax, 41h	; ASCII for 'A'
-	mov		ecx, 25d
-
-fillLetterArray:
-	mov		[edx], eax
-	add		edx, 4
-	inc		eax
-	loop	fillLetterArray
-
-	mov		edx, OFFSET upperCaseLetters
+;	mov		edx, OFFSET upperCaseLetters
+;	mov		eax, 41h	; ASCII for 'A'
+;	mov		ecx, 25d
+;
+;fillLetterArray:
+;	mov		[edx], eax
+;	add		edx, 4
+;	inc		eax
+;	loop	fillLetterArray
+;
+;	mov		edx, OFFSET upperCaseLetters
+;	call	WriteString
+	mov		edx, OFFSET askForRndStrLngth
 	call	WriteString
+	call	ReadDec
+	mov		ecx, eax
+	call	generateRandomString
 
 	call	WaitMsg
 
 	INVOKE ExitProcess,0
 main ENDP
+
+;*****************************************************************************
+;		PROCEDURES
+;*****************************************************************************
 
 addTwoInts PROC
 	mov		edx, OFFSET askForInt1
@@ -148,14 +160,28 @@ betterRandomRange PROC
 	mov		eax, difference
 	call	RandomRange
 	add		eax, lowerBound
-	call	WriteDec
+	;call	WriteDec
 	call	Crlf
 
 	ret
 betterRandomRange ENDP
 
 generateRandomString PROC
+	mov		ebx, 0
+generateLoop:
+	mov		lowerBound, 41h
+	mov		upperBound, 5Ah
+	mov		edx, upperBound
+	sub		edx, lowerBound
+	mov		difference, edx
+	call	betterRandomRange
+	mov		rndChar, eax
+	mov		al, BYTE PTR rndChar
+	mov		[rndStrArray + ebx], al
+	inc		ebx
+	loop	generateLoop
 
+	ret
 generateRandomString ENDP
 
 END main
