@@ -32,17 +32,21 @@ upperBound DWORD ?
 difference DWORD ?
 
 ; for problem 6:
-;upperCaseLetters DWORD 26 DUP(0)
-askForRndStrLngth BYTE "Enter the length for a random string: ",0
-upperCaseLetters DWORD 26 DUP (?) ;41h, 42h, 43h, 44h ;"A", "B", "C", "D"
+askForRndStrLngth BYTE "Enter the length for a random string (enter no more than ten): ",0
 rndChar DWORD ?
-rndStrArray BYTE ?
+rndStrArray BYTE 10 DUP (?)
 wrdLength DWORD ?
+
+; for problem 7:
+bufferColumns WORD ?
+bufferRows WORD ?
+rndXPos DWORD ?
+rndYPos DWORD ?
 
 .code
 main PROC
 
-; 1.
+; ---------------------------------- 1.
 	mov		ecx, [LENGTHOF colors]
 	mov		edx, OFFSET prob1Str
 	mov		ebx, 0
@@ -62,7 +66,7 @@ colorLoop:
 
 	call	Crlf
 
-; 2.
+; ---------------------------------- 2.
 	mov		eax, start
 	mov		ebx, 0	
 	mov		ecx, LENGTHOF links
@@ -82,17 +86,17 @@ sortLoop:
 	call	Crlf
 	call	Crlf
 
-; 3.
+; ---------------------------------- 3.
 	call	addTwoInts
 
-; 4.
+; ---------------------------------- 4.
 	mov		ecx, 2
 
 addTwoNums:
 	call	addTwoInts
 	loop	addTwoNums
 	
-; 5.
+; ---------------------------------- 5.
 	mov		edx, OFFSET askForRnd1
 	call	WriteString
 	call	ReadDec
@@ -111,7 +115,7 @@ getRnd:
 	loop	getRnd
 	call	Crlf
 
-; 6.
+; ---------------------------------- 6.
 	mov		ecx, 20
 	mov		edx, OFFSET askForRndStrLngth
 	call	WriteString
@@ -123,6 +127,11 @@ rndString:
 	pop		ecx
 	loop	rndString
 
+; ---------------------------------- 7.
+	call	GetMaxXY
+	mov		bufferColumns, dx
+	mov		bufferRows, ax
+; ---------------------------------- END
 	call	Crlf
 	call	WaitMsg
 
@@ -191,5 +200,12 @@ generateLoop:
 
 	ret
 generateRandomString ENDP
+
+putRndXYPos PROC
+	mov		eax, DWORD PTR bufferRows
+	call	RandomRange
+	mov		rndXPos, eax
+	mov		dl, BYTE PTR rndXPos
+putRndXYPos ENDP
 
 END main
