@@ -38,8 +38,8 @@ rndStrArray BYTE 10 DUP (?)
 wrdLength DWORD ?
 
 ; for problem 7:
-bufferColumns WORD ?
-bufferRows WORD ?
+bufferColumns DWORD ?
+bufferRows DWORD ?
 rndXPos DWORD ?
 rndYPos DWORD ?
 
@@ -128,9 +128,22 @@ rndString:
 	loop	rndString
 
 ; ---------------------------------- 7.
+	mov		eax, 0
 	call	GetMaxXY
-	mov		bufferColumns, dx
-	mov		bufferRows, ax
+	mov		ebx, 0
+	movzx	ebx, dl
+	mov		bufferColumns, ebx
+	mov		ebx, 0
+	movzx	ebx, al
+	mov		bufferRows, ebx
+	mov		ecx, 100
+
+rndCharLoop:
+	call	putRndXYPos
+	mov		eax, 100
+	call	Delay
+	loop	rndCharLoop
+
 ; ---------------------------------- END
 	call	Crlf
 	call	WaitMsg
@@ -202,10 +215,21 @@ generateLoop:
 generateRandomString ENDP
 
 putRndXYPos PROC
-	mov		eax, DWORD PTR bufferRows
+	mov		eax, 0
+	mov		eax, bufferRows
 	call	RandomRange
 	mov		rndXPos, eax
-	mov		dl, BYTE PTR rndXPos
+	mov		dh, BYTE PTR rndXPos
+	mov		eax, 0
+	mov		eax, bufferColumns
+	call	RandomRange
+	mov		rndYPos, eax
+	mov		dl, BYTE PTR rndYPos
+	call	Gotoxy
+	mov		al, 'A'
+	call	WriteChar
+
+	ret
 putRndXYPos ENDP
 
 END main
