@@ -43,6 +43,11 @@ bufferRows DWORD ?
 rndXPos DWORD ?
 rndYPos DWORD ?
 
+; for problem 8:
+backgroundColor DWORD 15d
+foregroundColor DWORD 15d
+testString BYTE "COLORS!",0
+
 .code
 main PROC
 
@@ -143,6 +148,26 @@ rndCharLoop:
 	mov		eax, 100
 	call	Delay
 	loop	rndCharLoop
+
+; ---------------------------------- 8.
+outterColorLoop:
+	mov		ecx, foregroundColor
+	
+	innerColorLoop:
+		mov		eax, 16d
+		mul		ecx
+		add		eax, foregroundColor
+		;mov		eax, foregroundColor + backgroundColor
+		call	SetTextColor
+		mov		edx, OFFSET testString
+		call	WriteString
+		call	Crlf
+		loop	innerColorLoop
+
+	dec		foregroundColor
+	mov		ecx, foregroundColor
+	loop	outterColorLoop
+		
 
 ; ---------------------------------- END
 	call	Crlf
