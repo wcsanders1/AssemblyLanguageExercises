@@ -44,9 +44,12 @@ rndXPos DWORD ?
 rndYPos DWORD ?
 
 ; for problem 8:
-backgroundColor DWORD 15d
 foregroundColor DWORD 15d
 testString BYTE "COLORS!",0
+
+; for problem 9:
+recurseTimes DWORD 0
+recurseMsg BYTE "The recursive method called itself this many times: ",0
 
 .code
 main PROC
@@ -157,7 +160,6 @@ outterColorLoop:
 		mov		eax, 16d
 		mul		ecx
 		add		eax, foregroundColor
-		;mov		eax, foregroundColor + backgroundColor
 		call	SetTextColor
 		mov		edx, OFFSET testString
 		call	WriteString
@@ -168,6 +170,13 @@ outterColorLoop:
 	mov		ecx, foregroundColor
 	loop	outterColorLoop
 		
+; ---------------------------------- 9.
+	mov		ecx, 10
+	call	recurseProc
+	mov		edx, OFFSET recurseMsg
+	call	WriteString
+	mov		eax, recurseTimes
+	call	WriteDec
 
 ; ---------------------------------- END
 	call	Crlf
@@ -256,5 +265,16 @@ putRndXYPos PROC
 
 	ret
 putRndXYPos ENDP
+
+recurseProc PROC
+	inc		recurseTimes
+	loop	recurse
+
+	ret
+recurse:
+	call	recurseProc
+
+	ret
+recurseProc ENDP
 
 END main
