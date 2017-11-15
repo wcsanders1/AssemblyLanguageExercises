@@ -51,6 +51,9 @@ testString BYTE "COLORS!",0
 recurseTimes DWORD 0
 recurseMsg BYTE "The recursive method called itself this many times: ",0
 
+; for problem 10:
+fibNums DWORD 50 DUP (?)
+
 .code
 main PROC
 
@@ -177,7 +180,12 @@ outterColorLoop:
 	call	WriteString
 	mov		eax, recurseTimes
 	call	WriteDec
+	call	Crlf
 
+; ---------------------------------- 10.
+	mov		ecx, 46
+	call	makeFibonacciSeq
+	call	Crlf
 ; ---------------------------------- END
 	call	Crlf
 	call	WaitMsg
@@ -276,5 +284,26 @@ recurse:
 
 	ret
 recurseProc ENDP
+
+makeFibonacciSeq PROC
+	mov		esi, 0
+	mov		fibNums, 0
+	add		esi, 4
+	mov		[fibNums + esi], 1
+	add		esi, 4
+
+fibLoop:
+	mov		ebx, [fibNums + esi - 8]
+	mov		edx, [fibNums + esi - 4]
+	add		edx, ebx
+	mov		[fibNUms + esi], edx
+	mov		eax, [fibNums + esi]
+	call	WriteDec
+	call	Crlf
+	add		esi, 4
+	loop	fibLoop
+
+	ret
+makeFibonacciSeq ENDP
 
 END main
