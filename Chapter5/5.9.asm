@@ -54,6 +54,10 @@ recurseMsg BYTE "The recursive method called itself this many times: ",0
 ; for problem 10:
 fibNums DWORD 50 DUP (?)
 
+; for problem 11:
+multiples BYTE 50 DUP (0)
+K DWORD 0
+
 .code
 main PROC
 
@@ -186,6 +190,12 @@ outterColorLoop:
 	mov		ecx, 46
 	call	makeFibonacciSeq
 	call	Crlf
+
+; ---------------------------------- 11.
+	mov		K, 3
+	call	findMultiplesOfK
+	call	Crlf
+
 ; ---------------------------------- END
 	call	Crlf
 	call	WaitMsg
@@ -305,5 +315,22 @@ fibLoop:
 
 	ret
 makeFibonacciSeq ENDP
+
+findMultiplesOfK PROC
+	mov		ebx, 0
+	mov		edx, 0
+	mov		eax, 50
+	div		K
+	mov		ecx, eax
+
+getMults:
+	inc		ebx
+	mov		eax, ebx
+	mul		K
+	mov		[multiples + eax], 1
+	loop	getMults
+
+	ret
+findMultiplesOfK ENDP
 
 END main
