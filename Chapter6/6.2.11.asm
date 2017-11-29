@@ -26,6 +26,10 @@ main PROC
 	mov		eax, 3d		; move odd number into eax to test
 	and		eax, 1b
 
+; ---------------------------------- 5.
+	mov		al, 01000001b	; uppercase 'a'
+	or		al, 00100000b
+
 	INVOKE ExitProcess,0
 main ENDP
 END main
