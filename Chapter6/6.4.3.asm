@@ -18,7 +18,7 @@ main PROC
 L1:
 	test	WORD PTR [esi], 8000h
 	pushfd
-	add		esi, TYPE array
+	add		esi, TYPE Array
 	popfd
 	loopz	L1
 
