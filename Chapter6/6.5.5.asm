@@ -43,25 +43,16 @@ q4:
 	mov		esi, 0
 	mov		ecx, arraySize
 
-L1:
-	cmp		esi, ecx
-	jl		L2
-	jmp		L5
-
-L2:
-	cmp		array[esi * 4], edx
-	jg		L3
-	jmp		L4
-
-L3:
-	add		eax, array[esi * 4]
-
-L4:
-	inc		esi
-	jmp		L1
-
-L5:
-	mov		sum, eax
+	L1:
+		cmp		array[esi * 4], edx
+		jng		L2
+		add		eax, array[esi * 4]
+	
+	L2:
+		inc		esi
+		loop	L1
+	
+		mov		sum, eax
 
 quit:
 
