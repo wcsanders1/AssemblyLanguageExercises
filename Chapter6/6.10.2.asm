@@ -9,6 +9,8 @@ INCLUDE Irvine32.inc
 parityVar DWORD 1235d
 setX DWORD 00001111010110100000111100111100b
 setY DWORD 10100011010110100000111100011000b
+val1 DWORD 10d
+X DWORD ?
 
 .code
 main PROC
@@ -45,6 +47,32 @@ L2:
 
 L3:
 L4:
+
+; ---------------------------------- 7.
+	cmp	val1, ecx
+	jbe L5
+	cmp ecx, edx
+	jbe L5
+	mov X, 1
+	jmp L6
+
+L5:
+	mov X, 2
+
+L6:
+
+; ---------------------------------- 8.
+	cmp ebx, ecx
+	ja L7
+	cmp ebx, val1
+	ja L7
+	mov X, 2
+	jmp L8
+
+L7:
+	mov X, 1
+
+L8:
 
 	INVOKE ExitProcess,0
 main ENDP
