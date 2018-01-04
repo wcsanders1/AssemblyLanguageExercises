@@ -11,6 +11,9 @@ setX DWORD 00001111010110100000111100111100b
 setY DWORD 10100011010110100000111100011000b
 val1 DWORD 10d
 X DWORD ?
+A DWORD ?
+B DWORD ?
+N DWORD ?
 
 .code
 main PROC
@@ -73,6 +76,44 @@ L7:
 	mov X, 1
 
 L8:
+
+; ---------------------------------- 9.
+	mov X, 2
+	cmp edx, eax
+	ja L9
+	cmp ebx, ecx
+	jbe L10
+	cmp ebx, edx
+	jbe L10
+
+L9:
+	mov X, 1
+
+L10:
+
+; ---------------------------------- 10.
+	mov N, 20
+
+L11:
+	cmp N, 3
+	je L12
+	mov eax, A
+	cmp N, eax
+	jb L13
+	mov ebx, B
+	cmp N, ebx
+	jg L13
+
+	L12:
+		dec N
+		jnz L11
+		jmp L14
+
+	L13:
+		sub N, 2
+		jnz L11
+
+L14:
 
 	INVOKE ExitProcess,0
 main ENDP
