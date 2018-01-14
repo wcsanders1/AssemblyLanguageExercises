@@ -14,6 +14,7 @@ j DWORD ?
 k DWORD ?
 askForJ BYTE "Enter the lower bound for the range of random numbers: ",0
 askForK BYTE "Enter the upper bound for the range of random numbers: ",0
+sumMessage BYTE "Here is the sum of that array: ",0
 
 .code
 main PROC
@@ -29,6 +30,7 @@ main PROC
 	call WriteString
 	call ReadDec
 	mov k, eax
+	inc k
 
 	mov eax, OFFSET fillArray
 	mov ebx, j
@@ -39,6 +41,15 @@ main PROC
 	mov ecx, LENGTHOF fillArray
 	mov eax, OFFSET fillArray
 	call writeArray
+
+; ---------------------------------- 2.
+	
+	mov edx, OFFSET sumMessage
+	call Crlf
+	call WriteString
+	call sumArray
+	call WriteDec
+	call Crlf
 
 ; ---------------------------------- END
 	call	Crlf
@@ -126,5 +137,40 @@ writeArray PROC
 	popad
 	ret
 writeArray ENDP
+
+;*****************************************************************************
+;*****************************************************************************
+
+sumArray PROC
+;-----------------------------------------------------------------------------
+; Sums the elements of a DWORD array of integers
+; Receives: EAX = pointer to array to sum
+;			ECX = length of array to sum
+; Returns: EAX = sum of the elements of the array
+;-----------------------------------------------------------------------------
+
+	.data
+	arrayToSumAddress DWORD ?
+	arraySum DWORD 0h
+
+	.code
+	mov arrayToSumAddress, eax
+	pushad
+
+	xor eax, eax
+	xor ebx, ebx
+	mov edx, arrayToSumAddress
+
+	SumArrayLoop:
+
+		add eax, [edx + ebx]
+		add ebx, SIZEOF DWORD
+		loop SumArrayLoop
+
+	mov arraySum, eax
+	popad
+	mov eax, arraySum
+	ret
+sumArray ENDP
 
 END main
