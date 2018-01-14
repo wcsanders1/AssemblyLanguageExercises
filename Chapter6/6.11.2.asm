@@ -37,21 +37,18 @@ main PROC
 	call createRandomArray
 
 	mov ecx, LENGTHOF fillArray
-	mov ebx, 0
+	mov eax, OFFSET fillArray
+	call writeArray
 
-	WriteArray:
-
-		mov eax, [fillArray + ebx]
-		call WriteDec
-		call Crlf
-		add ebx, SIZEOF DWORD
-		loop WriteArray
-
+; ---------------------------------- END
 	call	Crlf
 	call	WaitMsg
 
 	INVOKE ExitProcess,0
 main ENDP
+
+;*****************************************************************************
+;*****************************************************************************
 
 createRandomArray PROC
 ;-----------------------------------------------------------------------------
@@ -96,5 +93,38 @@ createRandomArray PROC
 	popad
 	ret
 createRandomArray ENDP
+
+;*****************************************************************************
+;*****************************************************************************
+
+writeArray PROC
+;-----------------------------------------------------------------------------
+; Writes the elements of a DWORD array to the console
+; Receives: EAX = pointer to array to write
+;			ECX = length of array to write
+; Returns: nothing
+;-----------------------------------------------------------------------------
+
+	.data
+	arrayToWriteAddress DWORD ?
+
+	.code
+	mov arrayToWriteAddress, eax
+	pushad
+
+	mov ebx, 0
+	mov edx, arrayToWriteAddress
+
+	WriteArrayLoop:
+
+		mov eax, [edx + ebx]
+		call WriteDec
+		call Crlf
+		add ebx, SIZEOF DWORD
+		loop WriteArrayLoop
+
+	popad
+	ret
+writeArray ENDP
 
 END main
