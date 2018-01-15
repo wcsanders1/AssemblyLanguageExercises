@@ -51,6 +51,10 @@ main PROC
 	call WriteDec
 	call Crlf
 
+; ---------------------------------- 3.
+
+
+
 ; ---------------------------------- END
 	call	Crlf
 	call	WaitMsg
@@ -172,5 +176,28 @@ sumArray PROC
 	mov eax, arraySum
 	ret
 sumArray ENDP
+
+;*****************************************************************************
+;*****************************************************************************
+
+calcGrade PROC
+;-----------------------------------------------------------------------------
+; Returns a letter grade based on a number
+; Receives: EAX = number to convert to grade
+; Returns: AL = letter grade corresponding to the number passed in
+;-----------------------------------------------------------------------------
+
+	.data
+	numberGrade DWORD ?
+	letterGrade BYTE ?
+
+	.code
+	mov numberGrade, eax
+	pushad
+
+	popad
+	mov al, letterGrade
+	ret
+calcGrade ENDP
 
 END main
