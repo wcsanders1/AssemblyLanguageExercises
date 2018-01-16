@@ -14,7 +14,13 @@ j DWORD ?
 k DWORD ?
 askForJ BYTE "Enter the lower bound for the range of random numbers: ",0
 askForK BYTE "Enter the upper bound for the range of random numbers: ",0
+
+; for problem 2:
 sumMessage BYTE "Here is the sum of that array: ",0
+
+; for problem 3:
+colon BYTE ": ",0
+grade BYTE ?
 
 .code
 main PROC
@@ -53,7 +59,22 @@ main PROC
 
 ; ---------------------------------- 3.
 
+	mov ecx, 10d
+	call Crlf
 
+	GetGrades:
+		mov eax, 50d
+		call RandomRange
+		add eax, 50
+		call WriteDec
+		mov edx, OFFSET colon
+		call WriteString
+		call calcGrade
+		mov grade, al
+		mov edx, OFFSET grade
+		call WriteString
+		call Crlf		
+		loop GetGrades
 
 ; ---------------------------------- END
 	call	Crlf
@@ -194,10 +215,30 @@ calcGrade PROC
 	.code
 	mov numberGrade, eax
 	pushad
+	mov eax, numberGrade
 
-	popad
-	mov al, letterGrade
-	ret
+	mov letterGrade, "A"
+	cmp eax, 90d
+	jge ExitProc
+
+	mov letterGrade, "B"
+	cmp eax, 80d
+	jge ExitProc
+
+	mov letterGrade, "C"
+	cmp eax, 70d
+	jge ExitProc
+
+	mov letterGrade, "D"
+	cmp eax, 60d
+	jge ExitProc
+
+	mov letterGrade, "F"
+
+	ExitProc:
+		popad
+		mov al, letterGrade
+		ret
 calcGrade ENDP
 
 END main
