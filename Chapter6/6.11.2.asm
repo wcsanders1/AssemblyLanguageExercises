@@ -6,6 +6,8 @@ ExitProcess PROTO, dwExitCode:DWORD
 INCLUDE Irvine32.inc
 
 .data
+TRUE = 1
+FALSE = 0
 
 ; for problem 1:
 N equ 10d
@@ -21,6 +23,15 @@ sumMessage BYTE "Here is the sum of that array: ",0
 ; for problem 3:
 colon BYTE ": ",0
 grade BYTE ?
+
+; for problem 4:
+gradeAverage WORD ?
+credits WORD ?
+okToRegister BYTE ?
+askForGradeAverage BYTE "What is your grade average? ",0
+askForCredits BYTE "How many credits do you have? ",0
+canRegisterMsg BYTE "You can register.",0
+cannotRegisterMsg BYTE "You cannot register.",0
 
 .code
 main PROC
@@ -75,6 +86,52 @@ main PROC
 		call WriteString
 		call Crlf		
 		loop GetGrades
+
+; ---------------------------------- 4.
+
+	mov edx, OFFSET askForGradeAverage
+	call WriteString
+	call Crlf
+	call ReadDec
+	mov gradeAverage, ax
+	mov edx, OFFSET askForCredits
+	call WriteString
+	call Crlf
+	call ReadDec
+	mov credits, ax
+
+	mov okToRegister, FALSE
+	mov ax, gradeAverage
+	mov bx, credits
+
+	cmp ax, 350d
+	jg CanRegister
+
+	cmp bx, 12d
+	jle CanRegister
+
+	cmp ax, 250d
+	jle Finish4
+
+	cmp bx, 16d
+	jg Finish4
+
+	CanRegister:
+		mov okToRegister, TRUE
+
+	Finish4:
+		mov edx, OFFSET cannotRegisterMsg
+		mov al, okToRegister
+		cmp al, 0
+		jg MakeCanRegisterMsg
+		jmp ReallyFinish4
+
+	MakeCanRegisterMsg:
+		mov edx, OFFSET canRegisterMsg
+
+	ReallyFinish4:
+		call Crlf
+		call WriteString
 
 ; ---------------------------------- END
 	call	Crlf
