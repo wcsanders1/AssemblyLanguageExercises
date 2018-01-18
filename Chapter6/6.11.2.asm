@@ -30,6 +30,7 @@ credits WORD ?
 okToRegister BYTE ?
 askForGradeAverage BYTE "What is your grade average? ",0
 askForCredits BYTE "How many credits do you have? ",0
+invalidCreditsMsg BYTE "You must have between 1 and 30 credits.",0
 canRegisterMsg BYTE "You can register.",0
 cannotRegisterMsg BYTE "You cannot register.",0
 
@@ -94,44 +95,63 @@ main PROC
 	call Crlf
 	call ReadDec
 	mov gradeAverage, ax
+	
 	mov edx, OFFSET askForCredits
 	call WriteString
 	call Crlf
 	call ReadDec
-	mov credits, ax
+	cmp eax, 1
+	jb CreditsInvalid
+	cmp eax, 30
+	ja CreditsInvalid
+	jmp CreditsValid
 
-	mov okToRegister, FALSE
-	mov ax, gradeAverage
-	mov bx, credits
-
-	cmp ax, 350d
-	jg CanRegister
-
-	cmp bx, 12d
-	jle CanRegister
-
-	cmp ax, 250d
-	jle Finish4
-
-	cmp bx, 16d
-	jg Finish4
-
-	CanRegister:
-		mov okToRegister, TRUE
-
-	Finish4:
-		mov edx, OFFSET cannotRegisterMsg
-		mov al, okToRegister
-		cmp al, 0
-		jg MakeCanRegisterMsg
-		jmp ReallyFinish4
-
-	MakeCanRegisterMsg:
-		mov edx, OFFSET canRegisterMsg
-
-	ReallyFinish4:
-		call Crlf
+	CreditsInvalid:
+		mov edx, OFFSET invalidCreditsMsg
 		call WriteString
+		jmp Exit4
+
+	CreditsValid:
+		mov credits, ax
+
+		mov okToRegister, FALSE
+		mov ax, gradeAverage
+		mov bx, credits
+
+		cmp ax, 350d
+		jg CanRegister
+
+		cmp bx, 12d
+		jle CanRegister
+
+		cmp ax, 250d
+		jle Finish4
+
+		cmp bx, 16d
+		jg Finish4
+
+		CanRegister:
+			mov okToRegister, TRUE
+
+		Finish4:
+			mov edx, OFFSET cannotRegisterMsg
+			mov al, okToRegister
+			cmp al, 0
+			jg MakeCanRegisterMsg
+			jmp ReallyFinish4
+
+		MakeCanRegisterMsg:
+			mov edx, OFFSET canRegisterMsg
+
+		ReallyFinish4:
+			call Crlf
+			call WriteString
+
+	Exit4:
+
+; ---------------------------------- 5.
+
+
 
 ; ---------------------------------- END
 	call	Crlf
