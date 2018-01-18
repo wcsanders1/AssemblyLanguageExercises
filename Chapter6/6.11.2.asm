@@ -34,6 +34,13 @@ invalidCreditsMsg BYTE "You must have between 1 and 30 credits.",0
 canRegisterMsg BYTE "You can register.",0
 cannotRegisterMsg BYTE "You cannot register.",0
 
+; for problem 5:
+firstChoice BYTE "1. x AND y",0
+secondChoice BYTE "2. x OR y",0
+thirdChoice BYTE "3. NOT x",0
+fourthChoice BYTE "4. x XOR y",0
+fifthChoice BYTE "5. EXITM program",0
+
 .code
 main PROC
 	
