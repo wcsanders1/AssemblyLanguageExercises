@@ -35,11 +35,26 @@ canRegisterMsg BYTE "You can register.",0
 cannotRegisterMsg BYTE "You cannot register.",0
 
 ; for problem 5:
-firstChoice BYTE "1. x AND y",0
-secondChoice BYTE "2. x OR y",0
-thirdChoice BYTE "3. NOT x",0
-fourthChoice BYTE "4. x XOR y",0
-fifthChoice BYTE "5. EXITM program",0
+firstChoiceMsg BYTE "1. x AND y",0
+secondChoiceMsg BYTE "2. x OR y",0
+thirdChoiceMsg BYTE "3. NOT x",0
+fourthChoiceMsg BYTE "4. x XOR y",0
+fifthChoiceMsg BYTE "5. EXITM program",0
+
+; for problems 5, 6:
+CaseTable BYTE "1"
+		  DWORD xANDy
+EntrySize = ($ - CaseTable)
+		  BYTE "2"
+		  DWORD xORy
+		  BYTE "3"
+		  DWORD NOTx
+		  BYTE "4"
+		  DWORD xXORy
+		  BYTE "5"
+		  DWORD exitProgram
+NumberOfEntries = ($ - CaseTable) / EntrySize
+chooseProcMsg BYTE "Choose from one of the following choices: ",0
 
 .code
 main PROC
@@ -155,11 +170,51 @@ main PROC
 			call WriteString
 
 	Exit4:
+		call Crlf
 
 ; ---------------------------------- 5.
 
+	mov edx, OFFSET chooseProcMsg
+	call WriteString
+	call Crlf
+	
+	mov edx, OFFSET firstChoiceMsg
+	call WriteString
+	call Crlf
+	
+	mov edx, OFFSET secondChoiceMsg
+	call WriteString
+	call Crlf
 
+	mov edx, OFFSET thirdChoiceMsg
+	call WriteString
+	call Crlf
 
+	mov edx, OFFSET fourthChoiceMsg
+	call WriteString
+	call Crlf
+
+	mov edx, OFFSET fifthChoiceMsg
+	call WriteString
+	call Crlf
+
+	call ReadChar
+	mov ebx, OFFSET CaseTable
+	mov ecx, NumberOfEntries
+
+	IterateCaseTable:
+		cmp al, [ebx]
+		jne NotEqual
+		call NEAR PTR [ebx + 1]
+		call WriteString
+		call Crlf
+		jmp Exit5
+		
+		NotEqual:
+			add ebx, EntrySize
+			loop IterateCaseTable
+
+	Exit5:
 ; ---------------------------------- END
 	call	Crlf
 	call	WaitMsg
@@ -324,5 +379,33 @@ calcGrade PROC
 		mov al, letterGrade
 		ret
 calcGrade ENDP
+
+;*****************************************************************************
+;*****************************************************************************
+
+xANDy PROC
+	mov edx, OFFSET firstChoiceMsg
+	ret
+xANDy ENDP
+
+xORy PROC
+	mov edx, OFFSET secondChoiceMsg
+	ret
+xORy ENDP
+
+NOTx PROC
+	mov edx, OFFSET thirdChoiceMsg
+	ret
+NOTx ENDP
+
+xXORy PROC
+	mov edx, OFFSET fourthChoiceMsg
+	ret
+xXORy ENDP
+
+exitProgram PROC
+	mov edx, OFFSET fifthChoiceMsg
+	ret
+exitProgram ENDP
 
 END main
