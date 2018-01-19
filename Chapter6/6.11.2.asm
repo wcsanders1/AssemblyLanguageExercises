@@ -55,6 +55,9 @@ EntrySize = ($ - CaseTable)
 		  DWORD exitProgram
 NumberOfEntries = ($ - CaseTable) / EntrySize
 chooseProcMsg BYTE "Choose from one of the following choices: ",0
+twoIntegersMsg BYTE "Enter two hexadecimal integers: ",0
+firstInt DWORD ?
+secondInt DWORD ?
 
 .code
 main PROC
@@ -172,7 +175,7 @@ main PROC
 	Exit4:
 		call Crlf
 
-; ---------------------------------- 5.
+; ---------------------------------- 5, 6.
 
 	mov edx, OFFSET chooseProcMsg
 	call WriteString
@@ -208,13 +211,13 @@ main PROC
 		call NEAR PTR [ebx + 1]
 		call WriteString
 		call Crlf
-		jmp Exit5
+		jmp Exit5and6
 		
 		NotEqual:
 			add ebx, EntrySize
 			loop IterateCaseTable
 
-	Exit5:
+	Exit5and6:
 ; ---------------------------------- END
 	call	Crlf
 	call	WaitMsg
@@ -384,6 +387,14 @@ calcGrade ENDP
 ;*****************************************************************************
 
 xANDy PROC
+
+	mov edx, OFFSET twoIntegersMsg
+	call WriteString
+	call ReadInt
+	mov firstInt, eax
+	call ReadInt
+	mov secondInt, eax
+
 	mov edx, OFFSET firstChoiceMsg
 	ret
 xANDy ENDP
