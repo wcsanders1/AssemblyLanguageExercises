@@ -60,6 +60,10 @@ twoHexMsg BYTE "Enter two hexadecimal integers: ",0
 firstHex DWORD ?
 secondHex DWORD ?
 
+; for problem 7:
+textColor DWORD ?
+colorMsg BYTE "This is a message about text color.",0
+
 .code
 main PROC
 	
@@ -218,6 +222,41 @@ main PROC
 			loop IterateCaseTable
 
 	Exit5and6:
+
+; ---------------------------------- 7.
+
+	mov ecx, 10
+
+	PrintColorMsg:
+		mov eax, 10d
+		call RandomRange
+	
+		cmp eax, 2d
+		jbe SetTextColorWhite
+	
+		cmp eax, 3
+		je SetTextColorBlue
+	
+		mov eax, green
+		call SetTextColor
+		jmp PrintMsg
+
+		SetTextColorWhite:
+			mov eax, white    ; white is defined in the Irvine library
+			call SetTextColor
+			jmp PrintMsg
+
+		SetTextColorBlue:
+			mov eax, blue
+			call SetTextColor
+			jmp PrintMsg
+
+		PrintMsg:
+			mov edx, OFFSET colorMsg
+			call WriteString
+			call Crlf
+
+		loop PrintColorMsg
 ; ---------------------------------- END
 	call	Crlf
 	call	WaitMsg
