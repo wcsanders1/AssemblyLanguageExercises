@@ -55,9 +55,10 @@ EntrySize = ($ - CaseTable)
 		  DWORD exitProgram
 NumberOfEntries = ($ - CaseTable) / EntrySize
 chooseProcMsg BYTE "Choose from one of the following choices: ",0
-twoIntegersMsg BYTE "Enter two hexadecimal integers: ",0
-firstInt DWORD ?
-secondInt DWORD ?
+oneHexMsg BYTE "Enter one hexadecimal integer: ",0
+twoHexMsg BYTE "Enter two hexadecimal integers: ",0
+firstHex DWORD ?
+secondHex DWORD ?
 
 .code
 main PROC
@@ -209,7 +210,6 @@ main PROC
 		cmp al, [ebx]
 		jne NotEqual
 		call NEAR PTR [ebx + 1]
-		call WriteString
 		call Crlf
 		jmp Exit5and6
 		
@@ -388,35 +388,70 @@ calcGrade ENDP
 
 xANDy PROC
 
-	mov edx, OFFSET twoIntegersMsg
+	mov edx, OFFSET twoHexMsg
 	call WriteString
+	call Crlf
 	call ReadInt
-	mov firstInt, eax
+	mov firstHex, eax
 	call ReadInt
-	mov secondInt, eax
-
-	mov edx, OFFSET firstChoiceMsg
+	call Crlf
+	and eax, firstHex
+	call WriteHex
+	call Crlf
 	ret
+
 xANDy ENDP
 
 xORy PROC
-	mov edx, OFFSET secondChoiceMsg
+	
+	mov edx, OFFSET twoHexMsg
+	call WriteString
+	call Crlf
+	call ReadInt
+	mov firstHex, eax
+	call ReadInt
+	call Crlf
+	or eax, firstHex
+	call WriteHex
+	call Crlf
 	ret
+
 xORy ENDP
 
 NOTx PROC
-	mov edx, OFFSET thirdChoiceMsg
+
+	mov edx, OFFSET oneHexMsg
+	call WriteString
+	call Crlf
+	call ReadInt	
+	not eax
+	call WriteHex
+	call Crlf
 	ret
+
 NOTx ENDP
 
 xXORy PROC
-	mov edx, OFFSET fourthChoiceMsg
+
+	mov edx, OFFSET twoHexMsg
+	call WriteString
+	call Crlf
+	call ReadInt
+	mov firstHex, eax
+	call ReadInt
+	call Crlf
+	xor eax, firstHex
+	call WriteHex
+	call Crlf
 	ret
+
 xXORy ENDP
 
 exitProgram PROC
+
 	mov edx, OFFSET fifthChoiceMsg
 	ret
+
 exitProgram ENDP
 
 END main
