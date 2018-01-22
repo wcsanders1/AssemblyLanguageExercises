@@ -64,6 +64,15 @@ secondHex DWORD ?
 textColor DWORD ?
 colorMsg BYTE "This is a message about text color.",0
 
+; for problem 8:
+KEY = "t!h"
+BUFMAX = 128
+stringPrompt BYTE "Enter some text to encrypt: ",0
+encrpytMsg BYTE "Cipher text: ",0
+decryptMsg BYTE "Decrpyted text: ",0
+buffer BYTE BUFMAX + 1 DUP(0)
+bufSuze DWORD ?
+
 .code
 main PROC
 	
@@ -257,6 +266,11 @@ main PROC
 			call Crlf
 
 		loop PrintColorMsg
+
+; ---------------------------------- 8.
+
+
+
 ; ---------------------------------- END
 	call	Crlf
 	call	WaitMsg
