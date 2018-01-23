@@ -65,13 +65,13 @@ textColor DWORD ?
 colorMsg BYTE "This is a message about text color.",0
 
 ; for problem 8:
-KEY = "t!h"
+key BYTE "r$d(2@v*",0
 BUFMAX = 128
 stringPrompt BYTE "Enter some text to encrypt: ",0
 encrpytMsg BYTE "Cipher text: ",0
 decryptMsg BYTE "Decrpyted text: ",0
 buffer BYTE BUFMAX + 1 DUP(0)
-bufSuze DWORD ?
+bufSize DWORD ?
 
 .code
 main PROC
@@ -506,5 +506,68 @@ exitProgram PROC
 	ret
 
 exitProgram ENDP
+
+;*****************************************************************************
+;*****************************************************************************
+
+inputTheString PROC
+;-----------------------------------------------------------------------------
+; Prompts the user for text, and saves the string and its length
+; Receives: nothing
+; Returns: nothing
+;-----------------------------------------------------------------------------
+
+	pushad
+	mov edx, OFFSET stringPrompt
+	call WriteString
+	mov ecx, BUFMAX
+	mov edx, OFFSET buffer
+	call ReadString
+	mov bufSize, eax
+	call Crlf
+	popad
+	ret
+
+inputTheString ENDP
+
+displayMessage PROC
+;-----------------------------------------------------------------------------
+; Displays an encrypted or decrypted message
+; Receives: EDX = the message to display
+; Returns: nothing
+;-----------------------------------------------------------------------------
+
+	pushad
+	call WriteString
+	mov edx, OFFSET buffer
+	call WriteString
+	call Crlf
+	call Crlf
+	popad
+	ret
+
+displayMessage ENDP
+
+translateBuffer PROC
+;-----------------------------------------------------------------------------
+; Translates a string by XORing each byte with the the key
+; Receives: nothing
+; Returns: nothing
+;-----------------------------------------------------------------------------
+
+	pushad
+	mov ecx, bufSize
+	mov esi, 0
+
+	Translate:
+		mov al, key
+		xor buffer[esi], al
+		inc	esi
+		loop Translate
+
+	popad
+	ret
+
+translateBuffer ENDP
 
 END main
