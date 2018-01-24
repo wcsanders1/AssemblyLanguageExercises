@@ -65,10 +65,10 @@ textColor DWORD ?
 colorMsg BYTE "This is a message about text color.",0
 
 ; for problem 8:
-key BYTE "r$d(2@v*",0
+key BYTE "r$d(2@v*t",0
 BUFMAX = 128
 stringPrompt BYTE "Enter some text to encrypt: ",0
-encrpytMsg BYTE "Cipher text: ",0
+encryptMsg BYTE "Cipher text: ",0
 decryptMsg BYTE "Decrpyted text: ",0
 buffer BYTE BUFMAX + 1 DUP(0)
 bufSize DWORD ?
@@ -269,7 +269,15 @@ main PROC
 
 ; ---------------------------------- 8.
 
-
+	call Crlf
+	call inputTheString
+	call translateBuffer
+	mov edx, OFFSET encryptMsg
+	call displayMessage
+	call translateBuffer
+	mov edx, OFFSET decryptMsg
+	call displayMessage
+	call Crlf
 
 ; ---------------------------------- END
 	call	Crlf
@@ -555,12 +563,24 @@ translateBuffer PROC
 ; Returns: nothing
 ;-----------------------------------------------------------------------------
 
+	.data
+	keySize DWORD SIZEOF key
+
+	.code
 	pushad
 	mov ecx, bufSize
 	mov esi, 0
+	mov ebx, -1
 
 	Translate:
-		mov al, key
+		cmp ebx, keySize
+		jle IncrementKeyIndex
+		mov ebx, -1
+
+		IncrementKeyIndex:
+			inc ebx
+
+		mov al, [key + ebx]
 		xor buffer[esi], al
 		inc	esi
 		loop Translate
