@@ -73,6 +73,14 @@ decryptMsg BYTE "Decrpyted text: ",0
 buffer BYTE BUFMAX + 1 DUP(0)
 bufSize DWORD ?
 
+; for problem 9:
+testPINOne BYTE 5, 4, 7, 3, 4
+testPINTwo BYTE 3, 2, 8, 3, 5
+testPINThree BYTE 7, 1, 9, 4, 5
+testPINFour BYTE 9, 2, 10d, 2, 6
+testPINFive BYTE 9, 5, 8, 5, 5, 1
+testPINSix BYTE 5, 2, 4, 1, 9
+
 .code
 main PROC
 	
@@ -278,6 +286,11 @@ main PROC
 	mov edx, OFFSET decryptMsg
 	call displayMessage
 	call Crlf
+
+; ---------------------------------- 9.
+
+	mov edx, OFFSET testPINOne
+	call validatePIN
 
 ; ---------------------------------- END
 	call	Crlf
@@ -589,5 +602,23 @@ translateBuffer PROC
 	ret
 
 translateBuffer ENDP
+
+validatePIN PROC
+;-----------------------------------------------------------------------------
+; Validates whether a 5-digit PIN is valid
+; Receives: EDX = pointer to byte array containing the 5-digit PIN
+; Returns: EAX = 0 if PIN is valid, or the position of the first invalid
+;				 digit
+;-----------------------------------------------------------------------------
+
+	.data
+	minValidDigits BYTE 5, 2, 4, 1, 3
+	maxValidDigits BYTE 9, 5, 8, 4, 6
+
+	.code
+	;mov ebx, LENGTHOF [edx]
+
+	ret
+validatePIN ENDP
 
 END main
