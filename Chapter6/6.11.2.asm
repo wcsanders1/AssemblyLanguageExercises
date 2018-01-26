@@ -614,11 +614,34 @@ validatePIN PROC
 	.data
 	minValidDigits BYTE 5, 2, 4, 1, 3
 	maxValidDigits BYTE 9, 5, 8, 4, 6
+	validNum DWORD 0
+	pinLength = 5
 
 	.code
-	;mov ebx, LENGTHOF [edx]
+	pushad
+	mov ecx, pinLength
+	mov ebx, 0
 
+	CheckValidity:
+		mov eax, [edx + ebx]
+		cmp eax, DWORD PTR [minValidDigits + ebx]
+		jl Invalid
+		
+		cmp eax, DWORD PTR [maxValidDigits + ebx]
+		jg Invalid
+		
+		loop CheckValidity
+		jmp Valid
+
+	Invalid:
+		mov validNum, ebx
+
+	Valid:
+
+	popad
+	mov eax, validNum
 	ret
+
 validatePIN ENDP
 
 END main
