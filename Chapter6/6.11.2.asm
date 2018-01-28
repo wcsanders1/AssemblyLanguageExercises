@@ -65,7 +65,7 @@ textColor DWORD ?
 colorMsg BYTE "This is a message about text color.",0
 
 ; for problem 8:
-key BYTE "r$d(2@v*t",0
+key BYTE "ABXmv#7",0
 BUFMAX = 128
 stringPrompt BYTE "Enter some text to encrypt: ",0
 encryptMsg BYTE "Cipher text: ",0
@@ -291,6 +291,33 @@ main PROC
 
 	mov edx, OFFSET testPINOne
 	call validatePIN
+	call WriteDec
+	call Crlf
+
+	mov edx, OFFSET testPINTwo
+	call validatePIN
+	call WriteDec
+	call Crlf
+
+	mov edx, OFFSET testPINThree
+	call validatePIN
+	call WriteDec
+	call Crlf
+
+	mov edx, OFFSET testPINFour
+	call validatePIN
+	call WriteDec
+	call Crlf
+
+	mov edx, OFFSET testPINFive
+	call validatePIN
+	call WriteDec
+	call Crlf
+
+	mov edx, OFFSET testPINSix
+	call validatePIN
+	call WriteDec
+	call Crlf
 
 ; ---------------------------------- END
 	call	Crlf
@@ -577,7 +604,7 @@ translateBuffer PROC
 ;-----------------------------------------------------------------------------
 
 	.data
-	keySize DWORD SIZEOF key
+	keySize DWORD SIZEOF key - 1
 
 	.code
 	pushad
@@ -587,7 +614,7 @@ translateBuffer PROC
 
 	Translate:
 		cmp ebx, keySize
-		jle IncrementKeyIndex
+		jl IncrementKeyIndex
 		mov ebx, -1
 
 		IncrementKeyIndex:
@@ -615,7 +642,7 @@ validatePIN PROC
 	minValidDigits BYTE 5, 2, 4, 1, 3
 	maxValidDigits BYTE 9, 5, 8, 4, 6
 	validNum DWORD 0
-	pinLength = 5
+	pinLength = LENGTHOF minValidDigits
 
 	.code
 	pushad
@@ -623,20 +650,22 @@ validatePIN PROC
 	mov ebx, 0
 
 	CheckValidity:
-		mov eax, [edx + ebx]
-		cmp eax, DWORD PTR [minValidDigits + ebx]
+		mov al, [edx + ebx]
+		cmp al, [minValidDigits + ebx]
 		jl Invalid
 		
-		cmp eax, DWORD PTR [maxValidDigits + ebx]
+		cmp al, [maxValidDigits + ebx]
 		jg Invalid
 		
+		inc ebx
 		loop CheckValidity
-		jmp Valid
+		jmp EndValidation
 
 	Invalid:
+		inc ebx
 		mov validNum, ebx
 
-	Valid:
+	EndValidation:
 
 	popad
 	mov eax, validNum
