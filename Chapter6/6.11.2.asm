@@ -81,6 +81,15 @@ testPINFour BYTE 9, 2, 10d, 2, 6
 testPINFive BYTE 9, 5, 8, 5, 5, 1
 testPINSix BYTE 5, 2, 4, 1, 9
 
+; for problem 10:
+testParityOne BYTE 00001111b, 11110000b, 10101010b, 00000000b,	; this array has an even nuber of bits
+				   11111111b, 11111000b, 00011111b, 01010101b,
+				   11001100b, 00110011b, 11100010b, 11011101b
+
+testParityTwo BYTE 10001111b, 11110000b, 10101010b, 00000000b,   ; this array has an odd nuber of bits
+				   11111111b, 11111000b, 00011111b, 01010101b,
+				   11001100b, 00110011b, 11100010b, 00011101b
+
 .code
 main PROC
 	
@@ -316,6 +325,21 @@ main PROC
 
 	mov edx, OFFSET testPINSix
 	call validatePIN
+	call WriteDec
+	call Crlf
+	call Crlf
+
+; ---------------------------------- 10.
+
+	mov edx, OFFSET testParityOne
+	mov ecx, LENGTHOF testParityOne
+	call determineParity
+	call WriteDec
+	call Crlf
+
+	mov edx, OFFSET testParityTwo
+	mov ecx, LENGTHOF testParityTwo
+	call determineParity
 	call WriteDec
 	call Crlf
 
@@ -596,6 +620,10 @@ displayMessage PROC
 
 displayMessage ENDP
 
+;*****************************************************************************
+;*****************************************************************************
+
+
 translateBuffer PROC
 ;-----------------------------------------------------------------------------
 ; Translates a string by XORing each byte with the the key
@@ -629,6 +657,9 @@ translateBuffer PROC
 	ret
 
 translateBuffer ENDP
+
+;*****************************************************************************
+;*****************************************************************************
 
 validatePIN PROC
 ;-----------------------------------------------------------------------------
@@ -666,11 +697,48 @@ validatePIN PROC
 		mov validNum, ebx
 
 	EndValidation:
-
 	popad
 	mov eax, validNum
 	ret
 
 validatePIN ENDP
+
+;*****************************************************************************
+;*****************************************************************************
+
+determineParity PROC
+;-----------------------------------------------------------------------------
+; Determines whether the total number of bits in a byte array is even or odd
+; Receives: EDX = pointer to byte array
+;			ECX = length of the array			
+; Returns: EAX = 0 if the array is odd, or 1 if even
+;-----------------------------------------------------------------------------
+
+	.data
+	hasParity DWORD 0
+	
+	.code
+	pushad
+	mov hasParity, 0
+	dec ecx
+	mov eax, 0
+	mov bl, [edx + eax]
+
+	GetParity:
+		pushf
+		inc eax
+		popf
+		xor bl, [edx + eax]
+		loop GetParity
+	
+	jpo FinishParity
+	mov hasParity, 1
+
+	FinishParity:
+	popad
+	mov eax, hasParity
+	ret
+
+determineParity ENDP
 
 END main
