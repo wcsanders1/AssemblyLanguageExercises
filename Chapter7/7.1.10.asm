@@ -20,6 +20,21 @@ main PROC
 	mov ebx, 0
 
 	shrd bx, ax, 1
+
+; ---------------------------------- 6.
+
+	mov ecx, 32d
+	mov eax, 01010101010101010101010101010101b
+	mov ebx, 0
+
+	FindParity:
+		ror eax, 1
+		jnc NotOne
+		inc ebx
+
+		NotOne:
+			loop FindParity
+
 	INVOKE ExitProcess,0
 main ENDP
 END main
