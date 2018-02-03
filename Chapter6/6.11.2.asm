@@ -722,7 +722,7 @@ determineParity PROC
 	mov hasParity, 0
 	dec ecx
 	mov eax, 0
-	mov bl, [edx + eax]
+	mov bl, [edx]
 
 	GetParity:
 		pushf
