@@ -35,6 +35,19 @@ main PROC
 		NotOne:
 			loop FindParity
 
+	ror ebx, 1
+	jc ClearParityFlag
+
+	SetParityFlag:
+		cmp bl, bl
+		jmp End6
+
+	ClearParityFlag:
+		and bl, 0
+		or bl, 1
+
+	End6:
+
 	INVOKE ExitProcess,0
 main ENDP
 END main
