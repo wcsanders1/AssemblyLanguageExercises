@@ -10,5 +10,8 @@
     <MASM Include="7.1.10.asm">
       <Filter>Source Files</Filter>
     </MASM>
+    <MASM Include="7.2.5.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
   </ItemGroup>
 </Project>
