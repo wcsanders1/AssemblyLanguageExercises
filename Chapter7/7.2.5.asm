@@ -30,6 +30,18 @@ main PROC
 	call WriteDec
 	call Crlf
 
+; ---------------------------------- 4.
+
+	.data
+	bMinutes BYTE 0
+
+	.code
+	mov ax, 0000011111100000b
+	mov bx, ax
+	shr bx, 5
+	mov bMinutes, bl
+	and bMinutes, 00011111b
+
 	call Crlf
 	call WaitMsg
 
