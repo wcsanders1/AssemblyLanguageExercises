@@ -49,6 +49,23 @@ main PROC
 
 	Exit2:
 
+; ---------------------------------- 3.
+
+	xor eax, eax
+	mov eax, 3d
+	shl eax, 4d
+
+; ---------------------------------- 4.
+
+	xor ebx, ebx
+	mov ebx, 16d
+	shr ebx, 2
+
+; ---------------------------------- 5.
+
+	mov dl, 00001111b
+	rol dl, 4
+
 	call	Crlf
 	call	WaitMsg
 
