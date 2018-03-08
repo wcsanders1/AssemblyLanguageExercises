@@ -86,6 +86,33 @@ main PROC
 		inc esi
 		loop LP7
 
+; ---------------------------------- 8.
+
+	.data
+	wordArray8 WORD 810Dh, 0C64h, 93ABh
+
+	.code
+	mov ecx, LENGTHOF wordArray8
+	xor esi, esi
+
+	LP8:
+		shl wordArray8[esi], 1
+		add esi, SIZEOF WORD
+		loop LP8
+
+; ---------------------------------- 9.
+
+	.data
+	va1_9 WORD 0
+
+	.code
+	mov ax, -5d
+	mov bx, 3
+	imul bx
+	mov va1_9, ax
+
+; ******** END ***********************	
+
 	call	Crlf
 	call	WaitMsg
 
