@@ -66,6 +66,26 @@ main PROC
 	mov dl, 00001111b
 	rol dl, 4
 
+; ---------------------------------- 6.
+
+	mov ax, 1000000000000000b
+	mov dx, 0000000000000001b
+	shld dx, ax, 1
+
+; ---------------------------------- 7.
+
+	.data
+	byteArray7 BYTE 81h, 20h, 33h
+
+	.code
+	mov ecx, SIZEOF byteArray7
+	xor esi, esi
+
+	LP7:
+		shr byteArray7[esi], 1
+		inc esi
+		loop LP7
+
 	call	Crlf
 	call	WaitMsg
 
