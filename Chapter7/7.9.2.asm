@@ -103,13 +103,26 @@ main PROC
 ; ---------------------------------- 9.
 
 	.data
-	va1_9 WORD 0
+	val_9 WORD 0
 
 	.code
 	mov ax, -5d
 	mov bx, 3
 	imul bx
-	mov va1_9, ax
+	mov val_9, ax
+
+; ---------------------------------- 10.
+
+	.data
+	val_10 WORD 0
+
+	.code
+	xor dx, dx
+	mov ax, -276d
+	cwd
+	mov bx, 10d
+	idiv bx
+	mov val_10, ax
 
 ; ******** END ***********************	
 
