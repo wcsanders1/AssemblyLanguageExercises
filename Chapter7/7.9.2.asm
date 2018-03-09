@@ -124,6 +124,21 @@ main PROC
 	idiv bx
 	mov val_10, ax
 
+; ---------------------------------- 11.
+
+	.data
+	val1_11 DWORD 0
+	val2_11 DWORD 5		; test value
+	val3_11 DWORD 8		; test value
+	val4_11 DWORD 13d	; test value
+
+	.code
+	mov eax, val2_11
+	mul val3_11
+	sub val4_11, 3
+	div val4_11
+	mov val1_11, eax
+
 ; ******** END ***********************	
 
 	call	Crlf
