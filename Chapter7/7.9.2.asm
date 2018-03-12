@@ -139,7 +139,25 @@ main PROC
 	div val4_11
 	mov val1_11, eax
 
-; ******** END ***********************	
+; ---------------------------------- 12.
+
+	.data
+	val1_12 DWORD 2
+	val2_12 DWORD 20d		; test value
+	val3_12 DWORD 5d		; test value
+
+	.code
+	xor edx, edx
+	mov eax, val2_12
+	cdq
+	mov ebx, val3_12
+	idiv ebx
+	mov ebx, val1_12
+	add ebx, val2_12
+	imul ebx
+	mov val1_12, eax
+
+; ******** END OF QUESTIONS **********	
 
 	call	Crlf
 	call	WaitMsg
