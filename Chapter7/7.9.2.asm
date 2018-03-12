@@ -157,6 +157,10 @@ main PROC
 	imul ebx
 	mov val1_12, eax
 
+; ---------------------------------- 13.
+
+	
+
 ; ******** END OF QUESTIONS **********	
 
 	call	Crlf
@@ -165,4 +169,16 @@ main PROC
 	INVOKE ExitProcess,0
 
 main ENDP
+
+displayBinaryToDecimal PROC
+;-----------------------------------------------------------------------------
+; Displays a binary value in decimal format
+; Receives: AL = Binary value between 0 and 99
+; Returns: nothing
+;-----------------------------------------------------------------------------
+
+
+
+displayBinaryToDecimal ENDP
+
 END main
