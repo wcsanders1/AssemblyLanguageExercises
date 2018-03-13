@@ -159,7 +159,8 @@ main PROC
 
 ; ---------------------------------- 13.
 
-	
+	mov ax, 81d
+	call displayBinaryToDecimal
 
 ; ******** END OF QUESTIONS **********	
 
@@ -177,8 +178,26 @@ displayBinaryToDecimal PROC
 ; Returns: nothing
 ;-----------------------------------------------------------------------------
 
+	shl ax, 8
+	shr ax, 8
+	mov bl, 10d
+	div bl
+	or al, 00110000b
+	call WriteChar
+	mov al, ah
+	or al, 00110000b
+	call WriteChar
 
+	; or just do this:
+	; aam
+	; or ax, 3030h
+	; push eax
+	; mov al, ah
+	; call WriteChar
+	; pop eax
+	; call WriteChar
 
+	ret
 displayBinaryToDecimal ENDP
 
 END main
