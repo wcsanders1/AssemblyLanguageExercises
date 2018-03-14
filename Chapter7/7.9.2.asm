@@ -162,6 +162,20 @@ main PROC
 	mov ax, 81d
 	call displayBinaryToDecimal
 
+; ---------------------------------- 15.
+
+	.data
+	n_15 DWORD 10d
+	y_15 DWORD 4d
+	x_15 DWORD 0
+
+	.code
+	mov eax, n_15
+	mov ebx, y_15
+	and eax, ebx
+	sub ebx, eax
+	mov x_15, ebx
+
 ; ******** END OF QUESTIONS **********	
 
 	call	Crlf
