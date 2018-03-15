@@ -170,11 +170,11 @@ main PROC
 	x_15 DWORD 0
 
 	.code
+	mov edx, y_15
+	sub edx, 1
 	mov eax, n_15
-	mov ebx, y_15
-	and eax, ebx
-	sub ebx, eax
-	mov x_15, ebx
+	and eax, edx
+	mov x_15, eax
 
 ; ******** END OF QUESTIONS **********	
 
