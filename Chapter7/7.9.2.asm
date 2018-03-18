@@ -176,6 +176,13 @@ main PROC
 	and eax, edx
 	mov x_15, eax
 
+; ---------------------------------- 16.
+
+	mov edx, eax
+	sar edx, 31d
+	add eax, edx
+	xor eax, edx
+
 ; ******** END OF QUESTIONS **********	
 
 	call	Crlf
