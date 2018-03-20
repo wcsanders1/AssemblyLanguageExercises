@@ -13,9 +13,10 @@ main PROC
 ; ---------------------------------- 1.
 	
 	.data
-	testNum1_1 BYTE '4321'
+	testNum1_1 BYTE '87654321'
 
 	.code
+	mov ebx, 5
 	mov ecx, LENGTHOF testNum1_1
 	mov edx, OFFSET testNum1_1
 	call WriteScaled
@@ -39,30 +40,34 @@ WriteScaled PROC
 ; Returns: nothing
 ;-----------------------------------------------------------------------------
 
-	.data
-	num_offset DWORD 0
-	num_length DWORD 0
-	decimal_offset DWORD 0
-	cur_pos DWORD 0
-
-	.code
-	mov decimal_offset, ebx
-	mov num_length, ecx
-	mov num_offset, edx
 	pushad
+	
+	mov eax, ecx
+	sub eax, ebx
+	mov ebx, eax
+	inc ebx
 
-	mov edx, num_offset
-	add edx, num_length
-	mov cur_pos, edx
-	mov ebx, 0
-	mov ecx, num_length
+	inc ecx		; increase num length by one to account for decimal
 
 	printNum:
 
-		mov al, BYTE PTR [cur_pos + ebx]
+		dec ebx
+		jz printDec
+
+		mov al, BYTE PTR [edx]
 		call WriteChar
-		inc ebx
+		inc edx
 		loop printNum
+
+		jmp exitWriteScaled
+
+		printDec:
+
+			mov al, '.'
+			call WriteChar
+			loop printNum
+
+	exitWriteScaled:
 
 	popad
 	ret
