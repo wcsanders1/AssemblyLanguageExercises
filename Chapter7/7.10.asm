@@ -22,6 +22,19 @@ main PROC
 	call WriteScaled
 	call Crlf
 
+; ---------------------------------- 2.
+
+	.data
+	testArray1A_2 BYTE 99h, 88h, 77h, 66h, 55h, 44h, 33h, 22h, 99h, 88h, 77h, 66h, 55h, 44h, 33h, 22h
+	testArray1B_2 BYTE 22h, 33h, 44h, 55h, 66h, 77h, 88h, 99h, 22h, 33h, 44h, 55h, 66h, 77h, 88h, 99h
+	result BYTE 10h DUP(0)
+
+	.code
+	mov esi, OFFSET testArray1A_2
+	mov edi, OFFSET testArray1B_2
+	mov ecx, LENGTHOF testArray1A_2
+	call ExtendedSub
+
 ; ******** END OF QUESTIONS **********	
 
 	call	Crlf
@@ -73,5 +86,38 @@ WriteScaled PROC
 	ret
 
 WriteScaled ENDP
+
+;***********************************************************************
+
+ExtendedSub PROC
+;-----------------------------------------------------------------------------
+; Calculates the result of subtracting two extended integers stored as
+; arrays of bytes.
+; Receives: ESI and EDI point to the two integers
+;			EBX points to a variable that will hold the result
+;			ECX holds the length of the arrays (the length of both arrays
+;				must be the same)
+; Returns: nothing
+;-----------------------------------------------------------------------------
+
+	pushad
+	clc
+
+	extendedSub_Loop:
+
+		mov al, [esi]
+		sbb al, [edi]
+		pushfd
+		mov [ebx], al
+		inc esi
+		inc edi
+		inc ebx
+		popfd
+		loop extendedSub_Loop
+
+	popad
+	ret
+
+ExtendedSub ENDP
 
 END main
