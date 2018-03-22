@@ -25,15 +25,21 @@ main PROC
 ; ---------------------------------- 2.
 
 	.data
-	testArray1A_2 BYTE 99h, 88h, 77h, 66h, 55h, 44h, 33h, 22h, 99h, 88h, 77h, 66h, 55h, 44h, 33h, 22h
-	testArray1B_2 BYTE 22h, 33h, 44h, 55h, 66h, 77h, 88h, 99h, 22h, 33h, 44h, 55h, 66h, 77h, 88h, 99h
+	testArray1A_2 BYTE 99h, 88h;, 77h, 66h, 55h, 44h, 33h, 22h, 99h, 88h, 77h, 66h, 55h, 44h, 33h, 22h
+	testArray1B_2 BYTE 22h, 33h;, 44h, 55h, 66h, 77h, 88h, 99h, 22h, 33h, 44h, 55h, 66h, 77h, 88h, 99h
 	result BYTE 10h DUP(0)
 
 	.code
 	mov esi, OFFSET testArray1A_2
 	mov edi, OFFSET testArray1B_2
 	mov ecx, LENGTHOF testArray1A_2
+	mov ebx, OFFSET result
 	call ExtendedSub
+	call Crlf
+
+	mov esi, OFFSET result
+	mov ecx, LENGTHOF testArray1A_2
+	call DisplaySum
 
 ; ******** END OF QUESTIONS **********	
 
@@ -119,5 +125,31 @@ ExtendedSub PROC
 	ret
 
 ExtendedSub ENDP
+
+DisplaySum PROC
+;-----------------------------------------------------------------------------
+; Displays sum of extended add/sub in correct order
+; Receives: ESI points to the var that holds the value to display
+;			ECX holds the length of the value to display
+; Returns: nothing
+;-----------------------------------------------------------------------------
+
+	pushad
+
+	add esi, ecx
+	sub esi, TYPE BYTE
+	;mov ebx, TYPE BYTE
+
+	displaySum_Loop:
+		
+		mov eax, [esi]
+		call WriteHex
+		sub esi, TYPE BYTE
+		loop displaySum_Loop
+
+	popad
+	ret
+
+DisplaySum ENDP
 
 END main
