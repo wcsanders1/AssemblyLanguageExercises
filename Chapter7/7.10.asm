@@ -39,7 +39,7 @@ main PROC
 
 	mov esi, OFFSET result
 	mov ecx, LENGTHOF testArray1A_2
-	call DisplaySum
+	call DisplaySubResult
 
 ; ******** END OF QUESTIONS **********	
 
@@ -126,7 +126,7 @@ ExtendedSub PROC
 
 ExtendedSub ENDP
 
-DisplaySum PROC
+DisplaySubResult PROC
 ;-----------------------------------------------------------------------------
 ; Displays sum of extended add/sub in correct order
 ; Receives: ESI points to the var that holds the value to display
@@ -148,6 +148,6 @@ DisplaySum PROC
 	popad
 	ret
 
-DisplaySum ENDP
+DisplaySubResult ENDP
 
 END main
