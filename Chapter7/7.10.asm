@@ -25,9 +25,9 @@ main PROC
 ; ---------------------------------- 2.
 
 	.data
-	testArray1A_2 BYTE 99h, 88h;, 77h, 66h, 55h, 44h, 33h, 22h, 99h, 88h, 77h, 66h, 55h, 44h, 33h, 22h
-	testArray1B_2 BYTE 22h, 33h;, 44h, 55h, 66h, 77h, 88h, 99h, 22h, 33h, 44h, 55h, 66h, 77h, 88h, 99h
-	result BYTE 10h DUP(0)
+	testArray1A_2 BYTE 99h, 88h, 77h, 66h, 55h, 44h, 33h, 22h, 99h, 88h, 77h, 66h, 55h, 44h, 33h, 22h
+	testArray1B_2 BYTE 22h, 33h, 44h, 55h, 66h, 77h, 88h, 99h, 22h, 33h, 44h, 55h, 66h, 77h, 88h, 99h
+	result BYTE LENGTHOF testArray1A_2 DUP(0)
 
 	.code
 	mov esi, OFFSET testArray1A_2
@@ -135,16 +135,14 @@ DisplaySum PROC
 ;-----------------------------------------------------------------------------
 
 	pushad
-
-	add esi, ecx
-	sub esi, TYPE BYTE
-	;mov ebx, TYPE BYTE
+	xor eax, eax
 
 	displaySum_Loop:
 		
-		mov eax, [esi]
-		call WriteHex
-		sub esi, TYPE BYTE
+		mov al, [esi]
+		mov ebx, TYPE BYTE
+		call WriteHexB
+		add esi, TYPE BYTE
 		loop displaySum_Loop
 
 	popad
