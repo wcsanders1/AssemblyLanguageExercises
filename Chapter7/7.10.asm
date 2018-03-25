@@ -27,19 +27,33 @@ main PROC
 	.data
 	testArray1A_2 BYTE 99h, 88h, 77h, 66h, 55h, 44h, 33h, 22h, 99h, 88h, 77h, 66h, 55h, 44h, 33h, 22h
 	testArray1B_2 BYTE 22h, 33h, 44h, 55h, 66h, 77h, 88h, 99h, 22h, 33h, 44h, 55h, 66h, 77h, 88h, 99h
-	result BYTE LENGTHOF testArray1A_2 DUP(0)
+	result_2 BYTE LENGTHOF testArray1A_2 DUP(0)
 
 	.code
 	mov esi, OFFSET testArray1A_2
 	mov edi, OFFSET testArray1B_2
 	mov ecx, LENGTHOF testArray1A_2
-	mov ebx, OFFSET result
+	mov ebx, OFFSET result_2
 	call ExtendedSub
 	call Crlf
 
-	mov esi, OFFSET result
+	mov esi, OFFSET result_2
 	mov ecx, LENGTHOF testArray1A_2
 	call DisplaySubResult
+	call Crlf
+
+; ---------------------------------- 3.
+
+	.data
+	result_3 byte sizeof dword dup(0)
+
+	.code
+	mov eax, 2890873615d
+	mov esi, offset result_3
+	call PackedToAsc
+	mov edx, offset result_3
+	call WriteString
+	call Crlf
 
 ; ******** END OF QUESTIONS **********	
 
@@ -149,5 +163,33 @@ DisplaySubResult PROC
 	ret
 
 DisplaySubResult ENDP
+
+PackedToAsc PROC
+;-----------------------------------------------------------------------------
+; Converts 4-byte packed decimal int to string of ASCII decimal digits
+; Receives: ESI points to the var that holds the ASCII string
+;			EAX contains the packed integer			
+; Returns: nothing
+;-----------------------------------------------------------------------------
+
+	.data
+	num_3 dword ?
+	
+	.code
+	pushad
+	mov num_3, eax
+	mov ecx, lengthof num_3
+	xor edi, edi
+	
+	packedToAsc_Loop:
+		mov al,17d
+		aam
+		or ax, 3030h
+		loop packedToAsc_Loop
+	
+	popad
+	ret
+
+PackedToAsc ENDP
 
 END main
