@@ -48,7 +48,7 @@ main PROC
 	result_3 byte sizeof dword dup(0)
 
 	.code
-	mov eax, 2890873615d
+	mov eax, 12345678h
 	mov esi, offset result_3
 	call PackedToAsc
 	mov edx, offset result_3
@@ -172,19 +172,18 @@ PackedToAsc PROC
 ; Returns: nothing
 ;-----------------------------------------------------------------------------
 
-	.data
-	num_3 dword ?
-	
-	.code
 	pushad
-	mov num_3, eax
-	mov ecx, lengthof num_3
-	xor edi, edi
-	
+	mov ecx, 8
+	mov edi, 7
+	mov edx, eax
+
 	packedToAsc_Loop:
-		mov al,17d
-		aam
-		or ax, 3030h
+		aaa
+		or al, 30h
+		mov [esi + edi], al
+		dec edi
+		shr edx, 4
+		mov eax, edx
 		loop packedToAsc_Loop
 	
 	popad
