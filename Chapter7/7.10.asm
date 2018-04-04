@@ -45,7 +45,7 @@ main PROC
 ; ---------------------------------- 3.
 
 	.data
-	result_3 byte sizeof dword dup(0)
+	result_3 byte sizeof dword * 2 dup(0)
 
 	.code
 	mov eax, 12345678h
@@ -58,11 +58,17 @@ main PROC
 ; ---------------------------------- 4.
 
 	.data
-	key_4 byte 2, -4, -1, 0, 3, -5, -2, 4, 4, -6
+	key_4 byte 2d, -4d, -1d, 0, 3d, -5d, -2d, 4d, 4d, -6d
 	test_string_4 byte "This is a test.",0
+	encrypted_string_4 byte lengthof test_string_4 dup(?)
 
 	.code
-
+	mov ebx, lengthof key_4
+	mov esi, offset key_4
+	mov ecx, lengthof test_string_4
+	mov edx, offset test_string_4
+	mov eax, offset encrypted_string_4
+	call EncryptString
 
 
 ; ******** END OF QUESTIONS **********	
@@ -230,12 +236,16 @@ EncryptString PROC
 		mov encryptString_keyIndex, 0
 
 		keyWithinBounds:
-			mov bl, byte ptr [edx + ecx]
+			mov bl, byte ptr [edx + ecx - 2]
 			mov encryptString_tempLoopCntr, ecx
-			mov cl, byte ptr [esi + encryptString_keyIndex]
+			push eax
+			mov eax, encryptString_keyIndex
+			mov cl, byte ptr [esi + eax]
+			pop eax
 			ror bl, cl
 			mov ecx, encryptString_tempLoopCntr
-			mov [eax + ecx], bl
+			mov [eax + ecx - 1], bl
+			inc encryptString_keyIndex
 		
 		loop encryptString_Loop
 
