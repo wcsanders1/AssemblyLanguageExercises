@@ -55,6 +55,16 @@ main PROC
 	call WriteString
 	call Crlf
 
+; ---------------------------------- 4.
+
+	.data
+	key_4 byte 2, -4, -1, 0, 3, -5, -2, 4, 4, -6
+	test_string_4 byte "This is a test.",0
+
+	.code
+
+
+
 ; ******** END OF QUESTIONS **********	
 
 	call	Crlf
@@ -190,5 +200,48 @@ PackedToAsc PROC
 	ret
 
 PackedToAsc ENDP
+
+EncryptString PROC
+;-----------------------------------------------------------------------------
+; Converts Encrypts a string using a provided key
+; Receives: ESI points to the key
+;			EBX holds the length of the key
+;			ECX holds the length of the string to encrypt
+;			EDX points to the string to encrypt			
+;			EAX points to the encrypted string			
+; Returns: nothing
+;-----------------------------------------------------------------------------
+
+	.data
+	encryptString_keyLength dword 0
+	encryptString_keyIndex dword 0
+	encryptString_stringLength dword 0
+	encryptString_tempLoopCntr dword 0
+
+	.code
+	pushad
+	mov encryptString_keyLength, ebx
+	mov encryptString_stringLength, ecx
+
+	encryptString_Loop:
+		mov ebx, encryptString_keyLength
+		cmp encryptString_keyIndex, ebx
+		jl keyWithinBounds
+		mov encryptString_keyIndex, 0
+
+		keyWithinBounds:
+			mov bl, byte ptr [edx + ecx]
+			mov encryptString_tempLoopCntr, ecx
+			mov cl, byte ptr [esi + encryptString_keyIndex]
+			ror bl, cl
+			mov ecx, encryptString_tempLoopCntr
+			mov [eax + ecx], bl
+		
+		loop encryptString_Loop
+
+	popad
+	ret
+
+EncryptString ENDP
 
 END main
