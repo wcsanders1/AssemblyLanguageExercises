@@ -70,6 +70,9 @@ main PROC
 	mov eax, offset encrypted_string_4
 	call EncryptString
 
+; ---------------------------------- 5.
+
+	call SieveOfEratosthenes
 
 ; ******** END OF QUESTIONS **********	
 
@@ -253,5 +256,34 @@ EncryptString PROC
 	ret
 
 EncryptString ENDP
+
+SieveOfEratosthenes PROC
+;-----------------------------------------------------------------------------
+; Makes a list of all primes within a range of integers from 2 to 10000
+; Receives: EAX points to the array of primes			
+; Returns: nothing
+;-----------------------------------------------------------------------------
+
+	.data
+	array_sieve byte 1000d dup (0)
+	
+	.code
+	pushad
+	mov ecx, 1000
+	mov bl, 2
+	mov edx, offset array_sieve
+	xor esi, esi
+
+	makeArraySieve_Loop:
+
+		mov [edx + esi], bl
+		inc bl
+		inc esi
+		loop makeArraySieve_Loop
+
+	popad
+	ret
+	
+SieveOfEratosthenes ENDP
 
 END main
