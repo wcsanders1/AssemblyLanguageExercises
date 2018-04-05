@@ -45,7 +45,7 @@ main PROC
 ; ---------------------------------- 3.
 
 	.data
-	result_3 byte sizeof dword * 2 dup(0)
+	result_3 byte sizeof dword * 2 + 1 dup(0)
 
 	.code
 	mov eax, 12345678h
