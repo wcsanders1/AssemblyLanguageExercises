@@ -265,11 +265,12 @@ SieveOfEratosthenes PROC
 ;-----------------------------------------------------------------------------
 
 	.data
-	array_sieve byte 1000d dup (0)
+	arraySize_sieve equ 1000d
+	array_sieve byte arraySize_sieve dup (0)
 	
 	.code
 	pushad
-	mov ecx, 1000
+	mov ecx, arraySize_sieve
 	mov bl, 2
 	mov edx, offset array_sieve
 	xor esi, esi
@@ -280,6 +281,40 @@ SieveOfEratosthenes PROC
 		inc bl
 		inc esi
 		loop makeArraySieve_Loop
+
+	xor ecx, ecx
+	xor esi, esi
+
+	mov edx, offset array_sieve
+	add edx, esi
+
+	sieve_Loop:
+
+		mov eax, [edx]
+		cmp eax, 0
+		jg crossOut
+		inc edx
+		cmp ecx, arraySize_sieve
+		jl sieve_Loop
+		jmp endSieve
+
+		crossOut:
+				
+			mov esi, [edx]
+			xor ebx, ebx
+			add esi, esi
+
+			crossOut_Loop:
+
+					
+				mov [edx + esi], ebx
+				
+				add esi, esi
+				cmp esi, arraySize_sieve
+				jg crossOut_Loop
+				jmp sieve_Loop
+
+	endSieve:
 
 	popad
 	ret
