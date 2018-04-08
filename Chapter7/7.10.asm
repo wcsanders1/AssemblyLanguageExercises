@@ -6,6 +6,7 @@ ExitProcess PROTO, dwExitCode:DWORD
 INCLUDE Irvine32.inc
 
 .data
+arraySize_sieve equ 20d
 
 .code
 main PROC
@@ -72,6 +73,11 @@ main PROC
 
 ; ---------------------------------- 5.
 
+	.data
+	primes_5 byte arraySize_sieve dup(?)
+
+	.code
+	mov eax, offset primes_5
 	call SieveOfEratosthenes
 
 ; ******** END OF QUESTIONS **********	
@@ -265,7 +271,6 @@ SieveOfEratosthenes PROC
 ;-----------------------------------------------------------------------------
 
 	.data
-	arraySize_sieve equ 1000d
 	array_sieve byte arraySize_sieve dup (0)
 	
 	.code
@@ -284,14 +289,12 @@ SieveOfEratosthenes PROC
 
 	xor ecx, ecx
 	xor esi, esi
-
-	mov edx, offset array_sieve
 	add edx, esi
 
 	sieve_Loop:
 
-		mov eax, [edx]
-		cmp eax, 0
+		mov al, [edx]
+		cmp al, 0
 		jg crossOut
 		inc edx
 		cmp ecx, arraySize_sieve
@@ -300,18 +303,21 @@ SieveOfEratosthenes PROC
 
 		crossOut:
 				
-			mov esi, [edx]
-			xor ebx, ebx
-			add esi, esi
+			movzx ecx, al
+			mov eax, arraySize_sieve
+			sub eax, ecx
+			cmp eax, ecx
+			jl endSieve
+			mov esi, ecx
+			xor bl, bl
 
 			crossOut_Loop:
 
-					
-				mov [edx + esi], ebx
-				
-				add esi, esi
-				cmp esi, arraySize_sieve
-				jg crossOut_Loop
+				mov [edx + esi], bl
+				add esi, ecx
+				cmp esi, eax
+				jle crossOut_Loop
+				inc edx
 				jmp sieve_Loop
 
 	endSieve:
