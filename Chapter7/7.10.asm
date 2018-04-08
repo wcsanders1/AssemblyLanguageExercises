@@ -6,7 +6,7 @@ ExitProcess PROTO, dwExitCode:DWORD
 INCLUDE Irvine32.inc
 
 .data
-arraySize_sieve equ 20d
+arraySize_sieve equ 250d
 
 .code
 main PROC
@@ -79,6 +79,16 @@ main PROC
 	.code
 	mov eax, offset primes_5
 	call SieveOfEratosthenes
+	mov ecx, arraySize_sieve
+	mov eax, offset primes_5
+	xor esi, esi
+
+	writeInt_Loop:
+		call Crlf
+		mov edx, [eax + esi]
+		call WriteInt
+		inc esi
+		loop writeInt_Loop
 
 ; ******** END OF QUESTIONS **********	
 
@@ -265,13 +275,14 @@ EncryptString ENDP
 
 SieveOfEratosthenes PROC
 ;-----------------------------------------------------------------------------
-; Makes a list of all primes within a range of integers from 2 to 10000
+; Makes a list of all primes within a range of integers from 2 to arraySize_sieve
 ; Receives: EAX points to the array of primes			
 ; Returns: nothing
 ;-----------------------------------------------------------------------------
 
 	.data
 	array_sieve byte arraySize_sieve dup (0)
+	primeArrayAdr dword 0
 	
 	.code
 	pushad
@@ -279,6 +290,7 @@ SieveOfEratosthenes PROC
 	mov bl, 2
 	mov edx, offset array_sieve
 	xor esi, esi
+	mov primeArrayAdr, eax
 
 	makeArraySieve_Loop:
 
@@ -321,6 +333,26 @@ SieveOfEratosthenes PROC
 				jmp sieve_Loop
 
 	endSieve:
+
+	mov ecx, arraySize_sieve
+	mov edx, offset array_sieve
+	mov eax, primeArrayAdr
+	xor esi, esi
+	xor edi, edi
+
+	makePrimes_Loop:
+
+		mov bl, byte ptr [edx + esi]
+		inc esi
+		xor bh, bh
+		cmp bl, bh
+		jng notPrime
+		mov [eax + edi], bl
+		inc edi
+
+		notPrime:
+			
+			loop makePrimes_Loop
 
 	popad
 	ret
