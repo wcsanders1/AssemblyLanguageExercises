@@ -80,15 +80,20 @@ main PROC
 	mov eax, offset primes_5
 	call SieveOfEratosthenes
 	mov ecx, arraySize_sieve
-	mov eax, offset primes_5
+	mov edx, offset primes_5
 	xor esi, esi
 
 	writeInt_Loop:
 		call Crlf
-		mov edx, [eax + esi]
+		movzx ebx, byte ptr [edx + esi]
+		cmp ebx, 0
+		jng end5
+		mov eax, ebx
 		call WriteInt
 		inc esi
 		loop writeInt_Loop
+
+	end5:
 
 ; ******** END OF QUESTIONS **********	
 
