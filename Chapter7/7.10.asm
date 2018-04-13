@@ -6,7 +6,7 @@ ExitProcess PROTO, dwExitCode:DWORD
 INCLUDE Irvine32.inc
 
 .data
-arraySize_sieve equ 250d
+arraySize_sieve equ 10d
 
 .code
 main PROC
@@ -74,7 +74,7 @@ main PROC
 ; ---------------------------------- 5.
 
 	.data
-	primes_5 byte arraySize_sieve dup(?)
+	primes_5 dword arraySize_sieve dup(?)
 
 	.code
 	mov eax, offset primes_5
@@ -286,32 +286,37 @@ SieveOfEratosthenes PROC
 ;-----------------------------------------------------------------------------
 
 	.data
-	array_sieve byte arraySize_sieve dup (0)
+	array_sieve dword arraySize_sieve dup (0)
 	primeArrayAdr dword 0
+	arrayEnd_sieve dword 0
 	
 	.code
 	pushad
 	mov ecx, arraySize_sieve
-	mov bl, 2
+	mov ebx, 2
 	mov edx, offset array_sieve
 	xor esi, esi
 	mov primeArrayAdr, eax
+	mov eax, arraySize_sieve
+	push esi
+	push edx
+	mov esi, 4
+	mul esi
+	pop edx
+	pop esi
+	mov arrayEnd_sieve, eax
 
 	makeArraySieve_Loop:
 
-		mov [edx + esi], bl
-		inc bl
-		inc esi
+		mov [edx + esi], ebx
+		inc ebx
+		add esi, 4
 		loop makeArraySieve_Loop
-
-	xor ecx, ecx
-	xor esi, esi
-	add edx, esi
 
 	sieve_Loop:
 
-		mov al, [edx]
-		cmp al, 0
+		mov eax, [edx]
+		cmp eax, 0
 		jg crossOut
 		inc edx
 		cmp ecx, arraySize_sieve
@@ -320,21 +325,31 @@ SieveOfEratosthenes PROC
 
 		crossOut:
 				
-			movzx ecx, al
+			mov ecx, eax
 			mov eax, arraySize_sieve
+			mov esi, 4
+			push edx
+			mul esi
+			pop edx
 			sub eax, ecx
 			cmp eax, ecx
 			jl endSieve
-			mov esi, ecx
-			xor bl, bl
+			mov eax, ecx
+			mov esi, 4
+			push edx
+			mul esi
+			pop edx
+			mov esi, eax
+			xor ebx, ebx
 
 			crossOut_Loop:
 
-				mov [edx + esi], bl
-				add esi, ecx
-				cmp esi, eax
+				mov [edx + eax], ebx
+				add eax, esi
+				; THIS DOESN'T WORK
+				cmp arrayEnd_sieve, eax
 				jle crossOut_Loop
-				inc edx
+				add edx, 4
 				jmp sieve_Loop
 
 	endSieve:
@@ -347,13 +362,13 @@ SieveOfEratosthenes PROC
 
 	makePrimes_Loop:
 
-		mov bl, byte ptr [edx + esi]
-		inc esi
-		xor bh, bh
-		cmp bl, bh
+		mov ebx, [edx + esi]
+		add esi, 4
+		xor esi, esi
+		cmp ebx, esi
 		jng notPrime
-		mov [eax + edi], bl
-		inc edi
+		mov [eax + edi], ebx
+		add edi, 4
 
 		notPrime:
 			
