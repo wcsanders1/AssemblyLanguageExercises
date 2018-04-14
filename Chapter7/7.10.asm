@@ -6,7 +6,7 @@ ExitProcess PROTO, dwExitCode:DWORD
 INCLUDE Irvine32.inc
 
 .data
-arraySize_sieve equ 10d
+arraySize_sieve equ 2000d
 
 .code
 main PROC
@@ -85,12 +85,12 @@ main PROC
 
 	writeInt_Loop:
 		call Crlf
-		movzx ebx, byte ptr [edx + esi]
+		mov ebx, [edx + esi]
 		cmp ebx, 0
 		jng end5
 		mov eax, ebx
 		call WriteInt
-		inc esi
+		add esi, 4
 		loop writeInt_Loop
 
 	end5:
@@ -287,6 +287,7 @@ SieveOfEratosthenes PROC
 
 	.data
 	array_sieve dword arraySize_sieve dup (0)
+	buffer dword 10 dup (0)
 	primeArrayAdr dword 0
 	arrayEnd_sieve dword 0
 	
@@ -304,6 +305,7 @@ SieveOfEratosthenes PROC
 	mul esi
 	pop edx
 	pop esi
+	add eax, edx
 	mov arrayEnd_sieve, eax
 
 	makeArraySieve_Loop:
@@ -318,7 +320,7 @@ SieveOfEratosthenes PROC
 		mov eax, [edx]
 		cmp eax, 0
 		jg crossOut
-		inc edx
+		add edx, 4
 		cmp ecx, arraySize_sieve
 		jl sieve_Loop
 		jmp endSieve
@@ -343,12 +345,13 @@ SieveOfEratosthenes PROC
 			xor ebx, ebx
 
 			crossOut_Loop:
-
+				
 				mov [edx + eax], ebx
 				add eax, esi
-				; THIS DOESN'T WORK
-				cmp arrayEnd_sieve, eax
-				jle crossOut_Loop
+				mov edi, eax
+				add edi, edx
+				cmp arrayEnd_sieve, edi
+				jg crossOut_Loop
 				add edx, 4
 				jmp sieve_Loop
 
@@ -364,8 +367,7 @@ SieveOfEratosthenes PROC
 
 		mov ebx, [edx + esi]
 		add esi, 4
-		xor esi, esi
-		cmp ebx, esi
+		cmp ebx, 0
 		jng notPrime
 		mov [eax + edi], ebx
 		add edi, 4
