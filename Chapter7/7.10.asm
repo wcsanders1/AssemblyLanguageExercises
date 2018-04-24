@@ -95,6 +95,13 @@ main PROC
 
 	end5:
 
+; ---------------------------------- 6.
+
+	call Crlf
+	mov ebx, 9
+	mov ecx, 6
+	call GCDCalc
+
 ; ******** END OF QUESTIONS **********	
 
 	call	Crlf
@@ -380,5 +387,45 @@ SieveOfEratosthenes PROC
 	ret
 	
 SieveOfEratosthenes ENDP
+
+GCDCalc PROC
+;-----------------------------------------------------------------------------
+; Finds the greatest common divisor of two integers
+; Receives: EBX is the larger integer
+;			ECX is the smaller integer			
+; Returns: ECX is the GCD
+;-----------------------------------------------------------------------------
+
+	.data
+	GCD dword 0
+	
+	.code
+	pushad
+
+	mov edx, ebx
+	neg ebx
+	cmovl ebx, edx
+
+	mov edx, ecx
+	neg ecx
+	cmovl ecx, edx
+
+	doDiv_GCDCalc:
+
+		xor edx, edx
+		mov eax, ebx
+		div ecx
+		mov ebx, ecx
+		mov ecx, edx
+		cmp ecx, 0
+		jg doDiv_GCDCalc
+
+	mov GCD, ebx
+
+	popad
+	mov ecx, GCD
+	ret
+
+GCDCalc ENDP
 
 END main
