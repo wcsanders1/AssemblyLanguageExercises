@@ -117,6 +117,11 @@ main PROC
 	call WriteInt
 	call Crlf
 
+; ---------------------------------- 7.
+
+	call Crlf
+
+
 ; ******** END OF QUESTIONS **********	
 
 	call	Crlf
@@ -442,5 +447,19 @@ GCDCalc PROC
 	ret
 
 GCDCalc ENDP
+
+BitwiseMultiply PROC
+;-----------------------------------------------------------------------------
+; Multiplies any unsigned 32-bit integer by by EAX
+; Receives: EAX and EBX hold the integers to multiply
+; Returns: EAX is the product
+;-----------------------------------------------------------------------------
+
+	pushad
+
+	popad
+	ret
+
+BitwiseMultiply ENDP
 
 END main
