@@ -6,7 +6,7 @@ ExitProcess PROTO, dwExitCode:DWORD
 INCLUDE Irvine32.inc
 
 .data
-arraySize_sieve equ 2000d
+arraySize_sieve equ 1000d
 
 .code
 main PROC
@@ -101,6 +101,21 @@ main PROC
 	mov ebx, 9
 	mov ecx, 6
 	call GCDCalc
+	mov eax, ecx
+	call WriteInt
+	call Crlf
+	mov ebx, 25
+	mov ecx, 5
+	call GCDCalc
+	mov eax, ecx
+	call WriteInt
+	call Crlf
+	mov ebx, 30
+	mov ecx, 12
+	call GCDCalc
+	mov eax, ecx
+	call WriteInt
+	call Crlf
 
 ; ******** END OF QUESTIONS **********	
 
