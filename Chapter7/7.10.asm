@@ -456,6 +456,19 @@ BitwiseMultiply PROC
 ;-----------------------------------------------------------------------------
 
 	pushad
+	xor esi, esi
+	mov ecx, sizeof dword
+
+	iterateBits_BitwiseMultiply:
+
+		inc esi
+		shr eax, 1
+		jc doAdd
+		loop iterateBits_BitwiseMultiply
+
+		doAdd:
+			
+
 
 	popad
 	ret
