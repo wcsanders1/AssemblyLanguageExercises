@@ -120,7 +120,9 @@ main PROC
 ; ---------------------------------- 7.
 
 	call Crlf
-
+	mov eax, 36d
+	mov ebx, 123d
+	call BitwiseMultiply
 
 ; ******** END OF QUESTIONS **********	
 
@@ -455,9 +457,14 @@ BitwiseMultiply PROC
 ; Returns: EAX is the product
 ;-----------------------------------------------------------------------------
 
+	.data
+	shifts_BitwiseMultiply dword sizeof dword dup(0)
+
+	.code
 	pushad
 	xor esi, esi
-	mov ecx, sizeof dword
+	xor edx, edx
+	mov ecx, 32d
 
 	iterateBits_BitwiseMultiply:
 
@@ -468,7 +475,11 @@ BitwiseMultiply PROC
 
 		doAdd:
 			
-
+			mov [shifts_BitwiseMultiply + edx], esi
+			add edx, 4
+			dec ecx
+			cmp ecx, 0
+			jg iterateBits_BitwiseMultiply
 
 	popad
 	ret
