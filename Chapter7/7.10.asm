@@ -123,6 +123,13 @@ main PROC
 	mov eax, 36d
 	mov ebx, 123d
 	call BitwiseMultiply
+	call Crlf
+	call WriteInt
+	mov eax, 324d
+	mov ebx, 3257d
+	call BitwiseMultiply
+	call Crlf
+	call WriteInt
 
 ; ******** END OF QUESTIONS **********	
 
@@ -458,7 +465,8 @@ BitwiseMultiply PROC
 ;-----------------------------------------------------------------------------
 
 	.data
-	shifts_BitwiseMultiply dword sizeof dword dup(0)
+	shifts_BitwiseMultiply dword 33d dup(0)
+	product_BitwiseMultiply dword 0
 
 	.code
 	pushad
@@ -468,20 +476,58 @@ BitwiseMultiply PROC
 
 	iterateBits_BitwiseMultiply:
 
-		inc esi
 		shr eax, 1
 		jc doAdd
+		inc esi
 		loop iterateBits_BitwiseMultiply
+		jmp exit_iterateBits_BitwiseMultiply
 
 		doAdd:
 			
 			mov [shifts_BitwiseMultiply + edx], esi
+			inc esi
 			add edx, 4
 			dec ecx
 			cmp ecx, 0
 			jg iterateBits_BitwiseMultiply
 
-	popad
+	exit_iterateBits_BitwiseMultiply:
+
+	mov esi, ebx
+	xor edx, edx
+
+	shiftLeft_BitwiseMultiply:
+
+		mov eax, [shifts_BitwiseMultiply + edx]
+		cmp eax, 0
+		jle addShifts_BitwiseMultiply
+		mov cl, al
+		shl ebx, cl
+		mov [shifts_BitwiseMultiply + edx], ebx
+		add edx, 4
+		mov ebx, esi
+		jmp shiftLeft_BitwiseMultiply
+
+	addShifts_BitwiseMultiply:
+		
+		xor eax, eax
+		xor edx, edx
+
+		addShiftsLoop_BitwiseMultiply:
+
+		mov ebx, [shifts_BitwiseMultiply + edx]
+		cmp ebx, 0
+		jle exit_BitwiseMultiply
+		add edx, 4
+		add eax, ebx
+		jmp addShiftsLoop_BitwiseMultiply
+
+	exit_BitwiseMultiply:
+
+		mov product_BitwiseMultiply, eax
+		popad	
+		mov eax, product_BitwiseMultiply
+	
 	ret
 
 BitwiseMultiply ENDP
