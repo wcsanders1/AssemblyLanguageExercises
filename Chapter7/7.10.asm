@@ -73,27 +73,27 @@ main PROC
 
 ; ---------------------------------- 5.
 
-	;.data
-	;primes_5 dword arraySize_sieve dup(?)
-	;
-	;.code
-	;mov eax, offset primes_5
-	;call SieveOfEratosthenes
-	;mov ecx, arraySize_sieve
-	;mov edx, offset primes_5
-	;xor esi, esi
+	.data
+	primes_5 dword arraySize_sieve dup(?)
+	
+	.code
+	mov eax, offset primes_5
+	call SieveOfEratosthenes
+	mov ecx, arraySize_sieve
+	mov edx, offset primes_5
+	xor esi, esi
 
-	;writeInt_Loop:
-	;	call Crlf
-	;	mov ebx, [edx + esi]
-	;	cmp ebx, 0
-	;	jng end5
-	;	mov eax, ebx
-	;	call WriteInt
-	;	add esi, 4
-	;	loop writeInt_Loop
-	;
-	;end5:
+	writeInt_Loop:
+		call Crlf
+		mov ebx, [edx + esi]
+		cmp ebx, 0
+		jng end5
+		mov eax, ebx
+		call WriteInt
+		add esi, 4
+		loop writeInt_Loop
+	
+	end5:
 
 ; ---------------------------------- 6.
 
@@ -134,18 +134,33 @@ main PROC
 ; ---------------------------------- 8.
 	
 	.data
-	num1_question8 dword 4536h
-	num2_question8 dword 7207h
-	sum_question8 dword 0
+	num1_question8 dword 74536h
+	num2_question8 dword 47207h
+	sum1_question8 dword 0
+
+	buffer_questions8 dword 0
+
+	num3_question8 word 3366h
+	num4_question8 word 8865h
+	sum2_question8 dword 0
 
 	.code
 	call Crlf
 	mov esi, offset num1_question8
 	mov edi, offset num2_question8
-	mov ecx, sizeof word
-	mov eax, offset sum_question8
+	mov ecx, sizeof dword
+	mov edx, offset sum1_question8
 	call AddPacked
-	mov eax, [sum_question8]
+	mov eax, [sum1_question8]
+	call WriteHex
+
+	call Crlf
+	mov esi, offset num3_question8
+	mov edi, offset num4_question8
+	mov ecx, sizeof word
+	mov edx, offset sum2_question8
+	call AddPacked
+	mov eax, [sum2_question8]
 	call WriteHex
 
 ; ******** END OF QUESTIONS **********	
@@ -568,15 +583,16 @@ AddPacked PROC
 
 	addLoop_AddPacked:
 
-		xor eax, eax
-		mov al, byte ptr [esi + ebx]
+		mov eax, 0
+		adc al, 0
+		add al, byte ptr [esi + ebx]
 		add al, byte ptr [edi + ebx]
 		daa
 		mov  byte ptr [edx + ebx], al
 		inc ebx
 		loop addLoop_AddPacked
 
-	xor eax, eax
+	mov al, 0
 	adc al, 0
 	mov byte ptr [edx + ebx], al
 	mov sumPtr_AddPacked, edx
