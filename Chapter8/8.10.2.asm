@@ -8,9 +8,20 @@ INCLUDE Irvine32.inc
 .code
 main PROC
 
-; ---------------------------------- 1.
-	mov eax, 6
-	
+; ---------------------------------- 2.
+	.data
+	num1_question2 DWORD 5
+	num2_question2 DWORD 10
+	num3_question2 DWORD 15
+
+	.code
+	push num1_question2
+	push num2_question2
+	push num3_question2
+	call AddThree
+	call WriteInt
+	call Crlf
+
 ; ******** END OF QUESTIONS **********
 
 	call	Crlf
@@ -24,13 +35,22 @@ main ENDP
 ;***********************************************************************
 AddThree PROC
 ;-----------------------------------------------------------------------------
-; Outputs a decimal; ASCII number with an implied decimal point
-; Receives: EBX = decimal offset
-;			ECX = number length
-;			EDX = number's offset
-; Returns: nothing
+; Calculates sum of three integers
+; Receives: Three integers on stack
+; Returns: Sum in EAX
 ;-----------------------------------------------------------------------------
+	
+	num1_AddThree equ [ebp + 16]
+	num2_AddThree equ [ebp + 12]
+	num3_AddThree equ [ebp + 8]
 
+	push ebp
+	mov ebp, esp
+	mov eax, num1_AddThree
+	add eax, num2_AddThree
+	add eax, num3_AddThree
+	pop ebp
+	ret
 
 AddThree ENDP
 
