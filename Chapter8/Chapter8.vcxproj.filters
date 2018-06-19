@@ -7,7 +7,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <MASM Include="8.2.11.asm">
+    <MASM Include="8.10.2.asm">
       <Filter>Source Files</Filter>
     </MASM>
   </ItemGroup>
