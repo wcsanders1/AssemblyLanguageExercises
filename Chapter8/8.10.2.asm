@@ -26,6 +26,19 @@ main PROC
 	
 	call LocalVarExercises
 
+; ---------------------------------- 8.
+
+	.data
+	test_string_8 byte "This is a test.",0
+
+	.code
+	push magenta
+	push green
+	call SetColor
+	mov edx, offset test_string_8
+	call WriteString
+
+
 ; ******** END OF QUESTIONS **********
 
 	call	Crlf
@@ -58,7 +71,9 @@ AddThree PROC
 
 AddThree ENDP
 ;-----------------------------------------------------------------------------
+
 ;*****************************************************************************
+
 ;-----------------------------------------------------------------------------
 LocalVarExercises PROC
 ;-----------------------------------------------------------------------------
@@ -75,5 +90,28 @@ LocalVarExercises PROC
 
 LocalVarExercises ENDP
 ;-----------------------------------------------------------------------------
+
+;*****************************************************************************
+
+;-----------------------------------------------------------------------------
+SetColor PROC
+;-----------------------------------------------------------------------------
+; Sets the foreground and background colors of the console
+; Receives: Foreground and background colors on the stack
+; Returns: Nothing
+;-----------------------------------------------------------------------------
+
+	local foregroundColor: dword,
+		  backgroundColor: dword
+	
+	mov eax, backgroundColor
+	mov ebx, 16d
+	mul ebx
+	add eax, foregroundColor
+	;mov eax, foregroundColor + (backgroundColor * 16)
+	call SetTextColor
+	ret
+
+SetColor ENDP
 
 END main
