@@ -32,8 +32,9 @@ main PROC
 	test_string_8 byte "This is a test.",0
 
 	.code
-	push magenta
-	push green
+	mov eax, 7
+	push yellow
+	push red
 	call SetColor
 	mov edx, offset test_string_8
 	call WriteString
@@ -100,16 +101,19 @@ SetColor PROC
 ; Receives: Foreground and background colors on the stack
 ; Returns: Nothing
 ;-----------------------------------------------------------------------------
-
-	local foregroundColor: dword,
-		  backgroundColor: dword
 	
-	mov eax, backgroundColor
-	mov ebx, 16d
+	backgroundColor equ [ebp+12]
+	foregroundColor equ [ebp+8]
+
+	push ebp
+	mov ebp, esp
+	
+	mov eax, foregroundColor
+	mov ebx, 16
 	mul ebx
-	add eax, foregroundColor
-	;mov eax, foregroundColor + (backgroundColor * 16)
+	add eax, backgroundColor
 	call SetTextColor
+	pop ebp
 	ret
 
 SetColor ENDP
