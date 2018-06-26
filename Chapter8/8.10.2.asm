@@ -39,6 +39,18 @@ main PROC
 	mov edx, offset test_string_8
 	call WriteString
 
+; ---------------------------------- 9.
+
+	.data
+	test_char_9 dword "r"
+	test_background_color_9 dword green
+	test_foreground_color_9 dword blue
+
+	.code
+	push test_char_9
+	push test_background_color_9
+	push test_foreground_color_9
+	call WriteColorChar
 
 ; ******** END OF QUESTIONS **********
 
@@ -117,5 +129,23 @@ SetColor PROC
 	ret
 
 SetColor ENDP
+;-----------------------------------------------------------------------------
 
+;*****************************************************************************
+
+;-----------------------------------------------------------------------------
+WriteColorChar PROC
+;-----------------------------------------------------------------------------
+; Displays single character with color
+; Receives: Character, foreground color, and background color on stack
+; Returns: Nothing
+;-----------------------------------------------------------------------------
+
+	local character: byte,
+		  foregroundColor2: byte,
+		  backgroundColor2: byte
+	
+	ret
+
+WriteColorChar ENDP
 END main
