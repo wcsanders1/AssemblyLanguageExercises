@@ -6,6 +6,26 @@ ExitProcess PROTO, dwExitCode:DWORD
 INCLUDE Irvine32.inc
 
 .code
+
+WriteColorChar PROC USES eax,
+	character:byte, foregroundColor2:byte, backgroundColor2:byte
+;-----------------------------------------------------------------------------
+; Displays single character with color
+; Receives: Character, foreground color, and background color on stack
+; Returns: Nothing
+;-----------------------------------------------------------------------------
+
+	movzx eax, backgroundColor2
+	shl eax, 4
+	add al, foregroundColor2
+	call SetTextColor
+	mov al, character
+	call WriteChar
+	
+	ret
+
+WriteColorChar ENDP
+
 main PROC
 
 ; ---------------------------------- 2.
@@ -38,19 +58,17 @@ main PROC
 	call SetColor
 	mov edx, offset test_string_8
 	call WriteString
-
+	call Crlf
 ; ---------------------------------- 9.
 
+
 	.data
-	test_char_9 dword "r"
-	test_background_color_9 dword green
-	test_foreground_color_9 dword blue
+	test_char_9 byte "r",0
+	test_foreground_color_9 byte green
+	test_background_color_9 byte red
 
 	.code
-	push test_char_9
-	push test_background_color_9
-	push test_foreground_color_9
-	call WriteColorChar
+	invoke WriteColorChar, test_char_9, test_foreground_color_9, test_background_color_9
 
 ; ******** END OF QUESTIONS **********
 
@@ -133,19 +151,5 @@ SetColor ENDP
 
 ;*****************************************************************************
 
-;-----------------------------------------------------------------------------
-WriteColorChar PROC
-;-----------------------------------------------------------------------------
-; Displays single character with color
-; Receives: Character, foreground color, and background color on stack
-; Returns: Nothing
-;-----------------------------------------------------------------------------
 
-	local character: byte,
-		  foregroundColor2: byte,
-		  backgroundColor2: byte
-	
-	ret
-
-WriteColorChar ENDP
 END main
