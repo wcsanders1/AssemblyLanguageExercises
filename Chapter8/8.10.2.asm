@@ -15,9 +15,9 @@ WriteColorChar PROC USES eax,
 ; Returns: Nothing
 ;-----------------------------------------------------------------------------
 
-	movzx eax, backgroundColor2
+	movzx eax, foregroundColor2
 	shl eax, 4
-	add al, foregroundColor2
+	add al, backgroundColor2
 	call SetTextColor
 	mov al, character
 	call WriteChar
@@ -25,6 +25,23 @@ WriteColorChar PROC USES eax,
 	ret
 
 WriteColorChar ENDP
+
+DumpMemory PROC USES esi ecx ebx,
+	arrayAddress:dword, arrayLength:dword, arrayType:dword
+;-----------------------------------------------------------------------------
+; Writes a range of memory to the console
+; Receives: Range of memory, range length, range type
+; Returns: Nothing
+;-----------------------------------------------------------------------------
+
+	mov esi, arrayAddress
+	mov ecx, arrayLength
+	mov ebx, arrayType
+	call DumpMem
+
+	ret
+
+DumpMemory ENDP
 
 main PROC
 
@@ -61,7 +78,6 @@ main PROC
 	call Crlf
 ; ---------------------------------- 9.
 
-
 	.data
 	test_char_9 byte "r",0
 	test_foreground_color_9 byte green
@@ -69,6 +85,14 @@ main PROC
 
 	.code
 	invoke WriteColorChar, test_char_9, test_foreground_color_9, test_background_color_9
+
+; ---------------------------------- 10.
+
+	.data
+	array9 dword 1,2,3,4,5,6,7,8,9,0Ah,0Bh
+
+	.code
+	invoke DumpMemory, offset array9, lengthof array9, type array9
 
 ; ******** END OF QUESTIONS **********
 
