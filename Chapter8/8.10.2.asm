@@ -43,6 +43,27 @@ DumpMemory PROC USES esi ecx ebx,
 
 DumpMemory ENDP
 
+MultArray PROC USES esi ebx ecx,
+	arrayOne:ptr dword, arrayTwo:ptr dword, arrayCount:dword
+;-----------------------------------------------------------------------------
+; This procedure doesn't do anything
+; Receives: Two pointers to arrays of dwords and the count of each array
+; Returns: Nothing
+;-----------------------------------------------------------------------------
+
+	mov esi, arrayOne
+	mov ebx, arrayTwo
+	mov ecx, arrayCount
+
+	ret
+
+MultArray ENDP
+
+MultArray PROTO,
+	arrayOne:ptr dword,
+	arrayTwo:ptr dword,
+	arrayCount:dword
+
 main PROC
 
 ; ---------------------------------- 2.
@@ -93,6 +114,15 @@ main PROC
 
 	.code
 	invoke DumpMemory, offset array9, lengthof array9, type array9
+
+; ---------------------------------- 11.
+
+	.data
+	array1_11 dword 10, 20, 30, 40
+	array2_11 dword 90, 80, 70, 60
+
+	.code
+	invoke MultArray, offset array1_11, offset array2_11, lengthof array1_11
 
 ; ******** END OF QUESTIONS **********
 
