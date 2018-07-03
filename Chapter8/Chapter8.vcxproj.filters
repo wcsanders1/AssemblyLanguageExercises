@@ -10,5 +10,8 @@
     <MASM Include="8.10.2.asm">
       <Filter>Source Files</Filter>
     </MASM>
+    <MASM Include="FindLargestProcedure.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
   </ItemGroup>
 </Project>
