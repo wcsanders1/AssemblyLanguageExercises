@@ -7,8 +7,8 @@ INCLUDE Irvine32.inc
 
 .code
 
-FindLargest PROC USES ebx ecx,
-	array:ptr dword, arrayCount:dword
+FindLargest PROC USES ebx ecx edx,
+	array: ptr dword, arrayCount:dword
 ;-----------------------------------------------------------------------------
 ; Returns the largest value in a dword array
 ; Receives: Pointer to signed dword array and count of array length
@@ -16,14 +16,15 @@ FindLargest PROC USES ebx ecx,
 ;-----------------------------------------------------------------------------
 
 	mov ecx, arrayCount
+	mov edx, array
 	xor eax, eax
 	xor ebx, ebx
 
 	findLargestLoop:
 
-		cmp eax, array[ebx]
-		jl notLarger
-		mov eax, array[ebx]
+		cmp eax, [edx + ebx]
+		jg notLarger
+		mov eax, [edx + ebx]
 
 		notLarger:
 			add ebx, 4
@@ -37,6 +38,12 @@ FindLargest ENDP
 main PROC
 ; ---------------------------------- 1.
 
+	.data
+	array1 dword 30, 50, 1909, 12, 89, 40
+
+	.code
+	invoke FindLargest, offset array1, lengthof array1
+	call WriteInt
 
 ; ******** END OF QUESTIONS **********
 
