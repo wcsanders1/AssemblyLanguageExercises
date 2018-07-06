@@ -13,5 +13,8 @@
     <MASM Include="FindLargestProcedure.asm">
       <Filter>Source Files</Filter>
     </MASM>
+    <MASM Include="ChessBoard.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
   </ItemGroup>
 </Project>

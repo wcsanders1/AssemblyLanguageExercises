@@ -36,7 +36,6 @@ FindLargest ENDP
 
 
 main PROC
-; ---------------------------------- 1.
 
 	.data
 	array1 dword 30, 50, 1909, 12, 89, 40
@@ -44,8 +43,6 @@ main PROC
 	.code
 	invoke FindLargest, offset array1, lengthof array1
 	call WriteInt
-
-; ******** END OF QUESTIONS **********
 
 	call	Crlf
 	call	WaitMsg
