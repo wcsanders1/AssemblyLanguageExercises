@@ -72,20 +72,25 @@ PrintLineAlternatingColors PROC USES eax ecx edx,
 		call WriteChar
 		inc dl
 
-		mov currentColor, al
+		mov al, currentColor
 		cmp al, color1
 		je changeToColor2
 		
 		movzx eax, color1
 		mov currentColor, al
+		cmp ecx, 0
+		jle exitPrintLineAlternatingColors
 		loop colorSpace
 
 		changeToColor2:
 
 			movzx eax, color2
 			mov currentColor, al
+			cmp ecx, 0
+			jle exitPrintLineAlternatingColors
 			loop colorSpace
 	
+	exitPrintLineAlternatingColors:
 	ret
 
 PrintLineAlternatingColors ENDP
