@@ -19,7 +19,7 @@ SetColorXY PROC USES eax edx,
 ; Returns: Nothing
 ;-----------------------------------------------------------------------------
 
-	local originalColor:byte
+	local originalColor: byte
 
 	call GetTextColor
 	mov originalColor, al
@@ -47,17 +47,21 @@ SetColorXY ENDP
 ;*****************************************************************************
 
 PrintLineAlternatingColors PROC USES eax ecx edx,
-	lineLength: dword, yPos: byte, color1: byte, color2: byte
+	lineLength: dword, yPos: byte, xPos: byte, color1: byte, color2: byte
 ;-----------------------------------------------------------------------------
 ; Makes a line on the console with alternating colors
 ; Receives: line length, y position, two colors
 ; Returns: Nothing
 ;-----------------------------------------------------------------------------
 	
-	local currentColor: byte
+	local currentColor: byte,
+		  originalColor: byte
+
+	call GetTextColor
+	mov originalColor, al
 
 	mov dh, yPos
-	mov dl, 0
+	mov dl, xPos
 	mov ecx, lineLength
 	xor eax, eax
 	movzx eax, color1
@@ -91,6 +95,10 @@ PrintLineAlternatingColors PROC USES eax ecx edx,
 			loop colorSpace
 	
 	exitPrintLineAlternatingColors:
+
+	movzx eax, originalColor
+	call SetTextColor
+
 	ret
 
 PrintLineAlternatingColors ENDP
@@ -99,9 +107,20 @@ PrintLineAlternatingColors ENDP
 ;****************************************************************************
 ;****************************************************************************
 
+PrintChessBoard PROC USES eax,
+	height: dword, wdth: dword, color1: byte, color2: byte
+
+	ret
+
+PrintChessBoard ENDP
+
+;****************************************************************************
+;****************************************************************************
+;****************************************************************************
+
 main PROC
 
-	invoke PrintLineAlternatingColors, 10, 10, red, green
+	invoke PrintLineAlternatingColors, 10, 10, 0, red, green
 
 	call	Crlf
 	call	WaitMsg
