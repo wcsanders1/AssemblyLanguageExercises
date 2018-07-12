@@ -7,45 +7,6 @@ INCLUDE Irvine32.inc
 
 .code
 
-;*****************************************************************************
-;*****************************************************************************
-;*****************************************************************************
-
-SetColorXY PROC USES eax edx,
-	color: byte, xPos: byte, yPos: byte
-;-----------------------------------------------------------------------------
-; Colors a space on the console
-; Receives: X and Y coordinates and color
-; Returns: Nothing
-;-----------------------------------------------------------------------------
-
-	local originalColor: byte
-
-	call GetTextColor
-	mov originalColor, al
-
-	mov dh, yPos
-	mov dl, xPos
-	call Gotoxy
-
-	movzx eax, color
-	shl eax, 4
-	call SetTextColor
-
-	mov al, ' '
-	call WriteChar
-
-	movzx eax, originalColor
-	call SetTextColor
-
-	ret
-
-SetColorXY ENDP
-
-;*****************************************************************************
-;*****************************************************************************
-;*****************************************************************************
-
 PrintLineAlternatingColors PROC USES eax ecx edx,
 	lineLength: dword, yPos: byte, xPos: byte, color1: byte, color2: byte
 ;-----------------------------------------------------------------------------
@@ -107,8 +68,24 @@ PrintLineAlternatingColors ENDP
 ;****************************************************************************
 ;****************************************************************************
 
-PrintChessBoard PROC USES eax,
+PrintChessBoard PROC USES eax ebx ecx,
 	height: dword, wdth: dword, color1: byte, color2: byte
+
+	local lineNumber: byte
+
+	mov ecx, height
+	mov al, 10d
+
+	printBoard:
+
+		mov lineNumber, al
+		invoke PrintLineAlternatingColors, wdth, lineNumber, 50, color1, color2
+		inc al
+		mov bl, color1
+		mov bh, color2
+		mov color1, bh
+		mov color2, bl
+		loop printBoard
 
 	ret
 
@@ -120,8 +97,7 @@ PrintChessBoard ENDP
 
 main PROC
 
-	invoke PrintLineAlternatingColors, 10, 10, 0, red, green
-
+	invoke PrintChessBoard, 8, 8, gray, white
 	call	Crlf
 	call	WaitMsg
 
