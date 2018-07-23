@@ -7,9 +7,13 @@ INCLUDE Irvine32.inc
 
 .code
 
+PrintChessBoard PROTO,
+	height: dword, wdth: dword, color1: byte, color2: byte
+
 main PROC
 
-	
+	invoke PrintChessBoard, 8, 8, green, red
+
 	call	Crlf
 	call	WaitMsg
 

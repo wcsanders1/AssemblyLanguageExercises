@@ -19,5 +19,8 @@
     <MASM Include="ChessBoardWithAlternatingColors.asm">
       <Filter>Source Files</Filter>
     </MASM>
+    <MASM Include="PrintChessBoardLib.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
   </ItemGroup>
 </Project>
