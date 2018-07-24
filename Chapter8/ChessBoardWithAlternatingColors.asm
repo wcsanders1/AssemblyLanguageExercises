@@ -12,7 +12,16 @@ PrintChessBoard PROTO,
 
 main PROC
 
-	invoke PrintChessBoard, 8, 8, green, red
+	mov ecx, 16d
+	mov eax, 500d
+	xor bl, bl
+	
+	renderBoard:
+
+		invoke PrintChessBoard, 8, 8, bl, white
+		call Delay
+		inc bl
+		loop renderBoard
 
 	call	Crlf
 	call	WaitMsg
