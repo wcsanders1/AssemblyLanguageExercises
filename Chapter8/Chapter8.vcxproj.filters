@@ -22,5 +22,8 @@
     <MASM Include="PrintChessBoardLib.asm">
       <Filter>Source Files</Filter>
     </MASM>
+    <MASM Include="FindThrees.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
   </ItemGroup>
 </Project>
