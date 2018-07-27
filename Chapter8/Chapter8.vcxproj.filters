@@ -28,5 +28,8 @@
     <MASM Include="DifferentInputs.asm">
       <Filter>Source Files</Filter>
     </MASM>
+    <MASM Include="ExchangingIntegers.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
   </ItemGroup>
 </Project>
