@@ -18,3 +18,10 @@ Assembly language is a low-level programming language with a nearly one-to-one c
   - right click the project in Visual Studio, go to Microsoft Macro `Assembler -> General` and add the directory to those library files to `Include Paths`
   - go to `Linker -> General` and add that directory to `Additional Library Directories`
   - go to `Linker -> Input` and add `Irvine32.lib` to `Additional Dependencies`
+
+## Program Basics
+
+- `.386` tells the assembler to use the .386 instruction set
+- `.model flat, stdcall`
+  - model is a directive specifying the memory model of the program, and `flat` is the model for Windows programs
+  - `stdcall` is the method for passing parameters to Windows functions, indicating that parameters are pushed from right to left
